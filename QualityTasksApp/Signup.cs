@@ -57,7 +57,9 @@ namespace QualityTasksApp
 
         private void Signup_BackBtn_Click(object sender, EventArgs e)
         {
-
+            ManagerHome managerHomeForm = new ManagerHome();
+            managerHomeForm.Show();
+            this.Hide();
         }
     }
 }

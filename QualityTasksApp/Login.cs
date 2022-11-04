@@ -16,5 +16,13 @@ namespace QualityTasksApp
         {
             InitializeComponent();
         }
+
+        private void loginBtn_Click(object sender, EventArgs e)
+        {
+            //add login logic
+            ManagerHome managerHomeForm = new ManagerHome();
+            managerHomeForm.Show();
+            this.Hide();
+        }
     }
 }
