@@ -39,6 +39,7 @@ namespace QualityTasksApp
                 sqlQuery = $"INSERT INTO USERS (firstName, lastName, eamil, password) VALUES (\"{firstNameVal}\",\"{lastNameVal}\",\"{Email}\",\"{Password}\", 1)";
 
                 //dont want to connect bc security shiz
+                //test commit
 
                 //SqlConnection con = new SqlConnection(dbConnect);
 
