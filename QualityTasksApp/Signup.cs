@@ -27,31 +27,34 @@ namespace QualityTasksApp
             string Email = email.Text;
             string Password = password.Text;
             string Password2 = password2.Text;
-       
 
-            string dbConnect = @"Data Source=SHURWP0009;Initial Catalog=USERS;Integrated Security=True";
+            string dbConnect = "Data Source=SHURWP0009;Initial Catalog=QualityTasksApp;Trust Server Certificate=true;user id=DotNetProcess;password=D0tNet";
             Debug.WriteLine("dbConnect = " + dbConnect);
             Console.Write("dbConnect = " + dbConnect);
             string sqlQuery = "";
 
             if (Password == Password2){
-                Debug.WriteLine("insert into Users " + sqlQuery);
-                sqlQuery = $"INSERT INTO USERS (firstName, lastName, eamil, password) VALUES (\"{firstNameVal}\",\"{lastNameVal}\",\"{Email}\",\"{Password}\", 1)";
+                
+                sqlQuery = $"INSERT INTO USERS (firstName, lastName, email, password, role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', 1)";
 
-                //dont want to connect bc security shiz
-                //test commit
+                Debug.WriteLine("\n\n\n\n\n" + "insert into Users " + sqlQuery + "\n\n\n\n\n");
 
-                //SqlConnection con = new SqlConnection(dbConnect);
+                SqlConnection con = new SqlConnection(dbConnect);
 
-                //con.Open();
-                //SqlCommand sc = new SqlCommand(sqlQuery, con);
-                //sc.ExecuteNonQuery();
-                //con.Close();
+                con.Open();
+                SqlCommand sc = new SqlCommand(sqlQuery, con);
+                sc.ExecuteNonQuery();
+                con.Close();
+
+                firstName.Text = "";
+                lastName.Text = "";
+                email.Text = "";
+                password.Text = "";
+                password2.Text = ""; 
 
             } else{
                 Debug.WriteLine("Passwords do not match");
             }
-            
             Debug.WriteLine("sqlQuery = " + sqlQuery);
         }
 
