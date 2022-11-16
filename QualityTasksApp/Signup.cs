@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
+using System.Configuration;
 
 namespace QualityTasksApp
 {
@@ -28,7 +29,9 @@ namespace QualityTasksApp
             string Password = password.Text;
             string Password2 = password2.Text;
 
-            string dbConnect = "Data Source=SHURWP0009;Initial Catalog=QualityTasksApp;Trust Server Certificate=true;user id=DotNetProcess;password=D0tNet";
+            var dbConnect = ConfigurationManager.AppSettings["dbConnectionString"];
+
+            //string dbConnect = "Data Source=SHURWP0009;Initial Catalog=QualityTasksApp;Trust Server Certificate=true;user id=DotNetProcess;password=D0tNet";
             Debug.WriteLine("dbConnect = " + dbConnect);
             Console.Write("dbConnect = " + dbConnect);
             string sqlQuery = "";
@@ -40,6 +43,7 @@ namespace QualityTasksApp
                 Debug.WriteLine("\n\n\n\n\n" + "insert into Users " + sqlQuery + "\n\n\n\n\n");
 
                 SqlConnection con = new SqlConnection(dbConnect);
+                //SqlConnection con = new SqlConnection();
 
                 con.Open();
                 SqlCommand sc = new SqlCommand(sqlQuery, con);

@@ -35,6 +35,7 @@
             this.password2 = new System.Windows.Forms.TextBox();
             this.Signup_SubmitBtn = new System.Windows.Forms.Button();
             this.Signup_BackBtn = new System.Windows.Forms.Button();
+            this.Error_label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // firstName
@@ -79,7 +80,7 @@
             // 
             // Signup_SubmitBtn
             // 
-            this.Signup_SubmitBtn.Location = new System.Drawing.Point(760, 518);
+            this.Signup_SubmitBtn.Location = new System.Drawing.Point(760, 553);
             this.Signup_SubmitBtn.Name = "Signup_SubmitBtn";
             this.Signup_SubmitBtn.Size = new System.Drawing.Size(209, 87);
             this.Signup_SubmitBtn.TabIndex = 5;
@@ -89,7 +90,7 @@
             // 
             // Signup_BackBtn
             // 
-            this.Signup_BackBtn.Location = new System.Drawing.Point(320, 518);
+            this.Signup_BackBtn.Location = new System.Drawing.Point(320, 553);
             this.Signup_BackBtn.Name = "Signup_BackBtn";
             this.Signup_BackBtn.Size = new System.Drawing.Size(209, 87);
             this.Signup_BackBtn.TabIndex = 6;
@@ -97,11 +98,20 @@
             this.Signup_BackBtn.UseVisualStyleBackColor = true;
             this.Signup_BackBtn.Click += new System.EventHandler(this.Signup_BackBtn_Click);
             // 
+            // Error_label
+            // 
+            this.Error_label.AutoSize = true;
+            this.Error_label.Location = new System.Drawing.Point(624, 498);
+            this.Error_label.Name = "Error_label";
+            this.Error_label.Size = new System.Drawing.Size(0, 25);
+            this.Error_label.TabIndex = 7;
+            // 
             // Signup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1344, 889);
+            this.Controls.Add(this.Error_label);
             this.Controls.Add(this.Signup_BackBtn);
             this.Controls.Add(this.Signup_SubmitBtn);
             this.Controls.Add(this.password2);
@@ -125,5 +135,6 @@
         private TextBox password2;
         private Button Signup_SubmitBtn;
         private Button Signup_BackBtn;
+        private Label Error_label;
     }
 }
