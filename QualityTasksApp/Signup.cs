@@ -29,26 +29,44 @@ namespace QualityTasksApp
             string Password = password.Text;
             string Password2 = password2.Text;
 
-            var dbConnect = ConfigurationManager.AppSettings["dbConnectionString"];
+            //var dbConnect = ConfigurationManager.AppSettings["dbConnectionString"];
 
-            //string dbConnect = "Data Source=SHURWP0009;Initial Catalog=QualityTasksApp;Trust Server Certificate=true;user id=DotNetProcess;password=D0tNet";
-            Debug.WriteLine("dbConnect = " + dbConnect);
-            Console.Write("dbConnect = " + dbConnect);
+            //ConfigurationManager.AppSettings["email"] = Email;
+
+
+            //Debug.WriteLine("dbConnect = " + dbConnect);
+            //Console.Write("dbConnect = " + dbConnect);
+
+            DBAccess dbConnectObj = new DBAccess();
+
             string sqlQuery = "";
 
             if (Password == Password2){
+                var newEmail = ConfigurationManager.AppSettings["email"];
                 
                 sqlQuery = $"INSERT INTO USERS (firstName, lastName, email, password, role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', 1)";
 
                 Debug.WriteLine("\n\n\n\n\n" + "insert into Users " + sqlQuery + "\n\n\n\n\n");
+                Debug.WriteLine("email = " + newEmail);
 
-                SqlConnection con = new SqlConnection(dbConnect);
+                SqlCommand insertCommand = new SqlCommand(sqlQuery);
+
+                //execute our insert query
+                int row = dbConnectObj.executeQuery(insertCommand);
+
+                //execute query returns a one on successful add 
+                if(row == 1)
+                {
+                    MessageBox.Show("Account Created Successfully");
+                }
+
+                //SqlConnection con = new SqlConnection(dbConnect);
                 //SqlConnection con = new SqlConnection();
 
-                con.Open();
-                SqlCommand sc = new SqlCommand(sqlQuery, con);
-                sc.ExecuteNonQuery();
-                con.Close();
+                //con.Open();
+                //SqlCommand sc = new SqlCommand(sqlQuery, con);
+                //sc.ExecuteNonQuery();
+                //con.Close();
 
                 firstName.Text = "";
                 lastName.Text = "";
