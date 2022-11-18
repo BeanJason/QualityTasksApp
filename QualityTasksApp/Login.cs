@@ -46,13 +46,39 @@ namespace QualityTasksApp
             if(email != "" && password != "")
             {
                 dbConnectObj.readDatathroughAdapter(loginQuery, dtUsers);
+                string firstName = "";
+                string lastName = "";
+                string userEmail = "";
+                string role = "";
 
+                Debug.WriteLine("\n\n\nuser = " + firstName + "\n\n\n");
 
                 if (dtUsers.Rows.Count == 1)
                 {
-                    ManagerHome managerHomeForm = new ManagerHome();
-                    managerHomeForm.Show();
-                    this.Hide();
+                    foreach (DataRow row in dtUsers.Rows)
+                    {
+                        firstName = row["firstName"].ToString();
+                        lastName = row["lastName"].ToString();
+                        userEmail = row["email"].ToString();
+                        role = row["role"].ToString();
+                    }
+
+                   ConfigurationManager.AppSettings["firstName"] = firstName;
+                    ConfigurationManager.AppSettings["lastName"] = lastName;
+                    ConfigurationManager.AppSettings["userEmail"] = userEmail;
+                    ConfigurationManager.AppSettings["role"] = role;
+
+                    if (role == "manager")
+                    {
+                        ManagerHome managerHomeForm = new ManagerHome();
+                        managerHomeForm.Show();
+                        this.Hide();
+                    }else if(role == "tech")
+                    {
+                        TechHome techHomeForm = new TechHome();
+                        techHomeForm.Show();
+                        this.Hide();
+                    }
                     dbConnectObj.closeConn();
                     Email.Text = "";
                     Password.Text = "";
