@@ -22,7 +22,6 @@ namespace QualityTasksApp
 
         private void Signup_SubmitBtn_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("test");
             string firstNameVal = firstName.Text;
             string lastNameVal = lastName.Text;
             string Email = email.Text;
@@ -35,8 +34,10 @@ namespace QualityTasksApp
 
             if (Password == Password2){
                 var newEmail = ConfigurationManager.AppSettings["email"];
-                
-                sqlQuery = $"INSERT INTO USERS (firstName, lastName, email, password, role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', 'tech')";
+
+                //INSERT INTO USERS (FirstName, LastName, email, password, role) VALUES ('Randy','Burchette','randy.burchette@plasticomnium.com','Plastic2022', 'manager');
+                //name int NOT NULL IDENTITY (1,1)
+                sqlQuery = $"INSERT INTO USERS (FirstName, LastName, Email, Password, Role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', 'tech')";
 
                 Debug.WriteLine("\n\n\n\n\n" + "insert into Users " + sqlQuery + "\n\n\n\n\n");
                 Debug.WriteLine("email = " + newEmail);

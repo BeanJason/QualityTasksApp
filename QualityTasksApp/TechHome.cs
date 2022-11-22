@@ -27,5 +27,17 @@ namespace QualityTasksApp
         {
     
         }
+
+        private void signOutBtn_Click(object sender, EventArgs e)
+        {
+            ConfigurationManager.AppSettings["firstName"] = "";
+            ConfigurationManager.AppSettings["lastName"] = "";
+            ConfigurationManager.AppSettings["userEmail"] = "";
+            ConfigurationManager.AppSettings["role"] = "";
+
+            Login loginForm = new Login();
+            loginForm.Show();
+            this.Hide();
+        }
     }
 }

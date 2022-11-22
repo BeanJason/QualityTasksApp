@@ -26,7 +26,7 @@ namespace QualityTasksApp
             string email = Email.Text;
             string password = Password.Text;
 
-            var dbConnect = ConfigurationManager.AppSettings["dbConnectionString"];
+            //var dbConnect = ConfigurationManager.AppSettings["dbConnectionString"];
 
             string loginQuery = $"SELECT * FROM USERS WHERE email = \'{email}\' AND password=\'{password}\'";
 

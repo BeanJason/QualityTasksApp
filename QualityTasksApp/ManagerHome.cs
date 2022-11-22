@@ -31,5 +31,12 @@ namespace QualityTasksApp
             LoginForm.Show();
             this.Hide();
         }
+
+        private void scheduleTasksBtn_Click(object sender, EventArgs e)
+        {
+            ScheduleTasks scheduleTaskForm = new ScheduleTasks();
+            scheduleTaskForm.Show();
+            this.Hide();
+        }
     }
 }

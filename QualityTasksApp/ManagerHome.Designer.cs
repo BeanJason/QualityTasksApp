@@ -30,6 +30,7 @@
         {
             this.AddNewTechBtn = new System.Windows.Forms.Button();
             this.SignOutBtn = new System.Windows.Forms.Button();
+            this.scheduleTasksBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AddNewTechBtn
@@ -52,11 +53,22 @@
             this.SignOutBtn.UseVisualStyleBackColor = true;
             this.SignOutBtn.Click += new System.EventHandler(this.SignOutBtn_Click);
             // 
+            // scheduleTasksBtn
+            // 
+            this.scheduleTasksBtn.Location = new System.Drawing.Point(588, 346);
+            this.scheduleTasksBtn.Name = "scheduleTasksBtn";
+            this.scheduleTasksBtn.Size = new System.Drawing.Size(293, 77);
+            this.scheduleTasksBtn.TabIndex = 2;
+            this.scheduleTasksBtn.Text = "Schedule Tasks";
+            this.scheduleTasksBtn.UseVisualStyleBackColor = true;
+            this.scheduleTasksBtn.Click += new System.EventHandler(this.scheduleTasksBtn_Click);
+            // 
             // ManagerHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1449, 875);
+            this.Controls.Add(this.scheduleTasksBtn);
             this.Controls.Add(this.SignOutBtn);
             this.Controls.Add(this.AddNewTechBtn);
             this.Name = "ManagerHome";
@@ -69,5 +81,6 @@
 
         private Button AddNewTechBtn;
         private Button SignOutBtn;
+        private Button scheduleTasksBtn;
     }
 }
