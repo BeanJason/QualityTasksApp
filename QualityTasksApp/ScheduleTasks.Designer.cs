@@ -45,13 +45,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.viewBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // startUpRadioBtn
             // 
             this.startUpRadioBtn.AutoSize = true;
-            this.startUpRadioBtn.Location = new System.Drawing.Point(166, 132);
+            this.startUpRadioBtn.Location = new System.Drawing.Point(955, 119);
             this.startUpRadioBtn.Name = "startUpRadioBtn";
             this.startUpRadioBtn.Size = new System.Drawing.Size(101, 29);
             this.startUpRadioBtn.TabIndex = 0;
@@ -62,7 +65,7 @@
             // dailyRadioBtn
             // 
             this.dailyRadioBtn.AutoSize = true;
-            this.dailyRadioBtn.Location = new System.Drawing.Point(359, 132);
+            this.dailyRadioBtn.Location = new System.Drawing.Point(1148, 119);
             this.dailyRadioBtn.Name = "dailyRadioBtn";
             this.dailyRadioBtn.Size = new System.Drawing.Size(76, 29);
             this.dailyRadioBtn.TabIndex = 1;
@@ -73,7 +76,7 @@
             // weeklyRadioBtn
             // 
             this.weeklyRadioBtn.AutoSize = true;
-            this.weeklyRadioBtn.Location = new System.Drawing.Point(530, 132);
+            this.weeklyRadioBtn.Location = new System.Drawing.Point(1319, 119);
             this.weeklyRadioBtn.Name = "weeklyRadioBtn";
             this.weeklyRadioBtn.Size = new System.Drawing.Size(93, 29);
             this.weeklyRadioBtn.TabIndex = 2;
@@ -115,6 +118,7 @@
             this.addTaskBtn.TabIndex = 7;
             this.addTaskBtn.Text = "Add";
             this.addTaskBtn.UseVisualStyleBackColor = true;
+            this.addTaskBtn.Click += new System.EventHandler(this.addTaskBtn_Click);
             // 
             // dataGridView1
             // 
@@ -155,7 +159,7 @@
             // 
             // newTankTypeInput
             // 
-            this.newTankTypeInput.Location = new System.Drawing.Point(163, 235);
+            this.newTankTypeInput.Location = new System.Drawing.Point(122, 235);
             this.newTankTypeInput.Name = "newTankTypeInput";
             this.newTankTypeInput.PlaceholderText = "Add new tank type";
             this.newTankTypeInput.Size = new System.Drawing.Size(172, 31);
@@ -164,7 +168,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(169, 192);
+            this.label4.Location = new System.Drawing.Point(128, 192);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(166, 25);
             this.label4.TabIndex = 14;
@@ -172,7 +176,7 @@
             // 
             // newTankTypeBtn
             // 
-            this.newTankTypeBtn.Location = new System.Drawing.Point(359, 232);
+            this.newTankTypeBtn.Location = new System.Drawing.Point(318, 232);
             this.newTankTypeBtn.Name = "newTankTypeBtn";
             this.newTankTypeBtn.Size = new System.Drawing.Size(178, 34);
             this.newTankTypeBtn.TabIndex = 15;
@@ -203,14 +207,43 @@
             this.flowLayoutPanel1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(121, 272);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(300, 355);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(375, 355);
             this.flowLayoutPanel1.TabIndex = 18;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(722, 119);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(182, 33);
+            this.comboBox4.TabIndex = 19;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(722, 79);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 25);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Tank Type:";
+            // 
+            // viewBtn
+            // 
+            this.viewBtn.Location = new System.Drawing.Point(1300, 171);
+            this.viewBtn.Name = "viewBtn";
+            this.viewBtn.Size = new System.Drawing.Size(112, 34);
+            this.viewBtn.TabIndex = 21;
+            this.viewBtn.Text = "View";
+            this.viewBtn.UseVisualStyleBackColor = true;
             // 
             // ScheduleTasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1467, 1024);
+            this.Controls.Add(this.viewBtn);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.comboBox4);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.newTankTypeBtn);
@@ -256,5 +289,8 @@
         private Label label3;
         private ComboBox comboBox3;
         private FlowLayoutPanel flowLayoutPanel1;
+        private ComboBox comboBox4;
+        private Label label5;
+        private Button viewBtn;
     }
 }
