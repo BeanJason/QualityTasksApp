@@ -23,8 +23,8 @@ namespace QualityTasksApp
         private void ScheduleTasks_Load(object sender, EventArgs e)
         {
             DBAccess dbConnectObj = new DBAccess();
-            DataTable dtTasks = new DataTable();
             DataTable dtTanks = new DataTable();
+            DataTable dtTasks = new DataTable();
             DataTable dtSchedule = new DataTable();
 
             string TankQuery = $"SELECT * FROM TANK_TYPE";
@@ -35,16 +35,18 @@ namespace QualityTasksApp
             dbConnectObj.readDatathroughAdapter(TasksQuery, dtTasks);
             dbConnectObj.readDatathroughAdapter(ScheduleQuery, dtSchedule);
 
-            //https://stackoverflow.com/questions/7423911/how-to-populate-c-sharp-windows-forms-combobox
-
             if (dtTanks.Rows.Count >= 1)
             {
                 comboBox1.DataSource = dtTanks;
                 comboBox1.DisplayMember = "Type";
                 comboBox1.ValueMember = "Type_ID";
+
+                comboBox4.DataSource = dtTanks;
+                comboBox4.DisplayMember = "Type";
+                comboBox4.ValueMember = "Type";
                 //foreach (DataRow row in dtTanks.Rows)
                 //{
-                
+
                 //    //comboBox1.Items.Add(row["Type"].ToString());
                 //}
             }
@@ -101,6 +103,22 @@ namespace QualityTasksApp
             {
                 MessageBox.Show("Tank Type added Successfully");
                 newTankTypeInput.Text = "";
+
+                DataTable dtTanks = new DataTable();
+                string TankQuery = $"SELECT * FROM TANK_TYPE";
+                dbConnectObj.readDatathroughAdapter(TankQuery, dtTanks);
+
+                if (dtTanks.Rows.Count >= 1)
+                {
+                    comboBox1.DataSource = dtTanks;
+                    comboBox1.DisplayMember = "Type";
+                    comboBox1.ValueMember = "Type_ID";
+
+                    comboBox4.DataSource = dtTanks;
+                    comboBox4.DisplayMember = "Type";
+                    comboBox4.ValueMember = "Type";
+                }
+
             }
             else
             {
@@ -111,12 +129,17 @@ namespace QualityTasksApp
 
         private void addTaskBtn_Click(object sender, EventArgs e)
         {
+            //ERROR: CAN ADD DATA THAT IS ALREADY THERE
+
+
             //get the ID of the selected values
             var tank = comboBox1.SelectedValue;
             var task = comboBox2.SelectedValue;
             var schedule = comboBox3.SelectedValue;
 
-            string sqlQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID) VALUES (\'{tank}\',\'{task}\',\'{schedule}\')";
+            string sqlQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID) VALUES ({task},{tank},{schedule})";
+
+            Debug.WriteLine("\n\n\n" + sqlQuery + "\n\n\n");
 
             DBAccess dbConnectObj = new DBAccess();
 
@@ -129,6 +152,42 @@ namespace QualityTasksApp
             if (row == 1)
             {
                 MessageBox.Show("New Task Added Successfully");
+            }
+        }
+
+        private void viewBtn_Click(object sender, EventArgs e)
+        {
+            var tank = comboBox4.SelectedValue;
+            string selectedFrequency = "";
+
+            if (startUpRadioBtn.Checked)
+            {
+                selectedFrequency = "Start Up";
+            }
+            else if (dailyRadioBtn.Checked)
+            {
+                selectedFrequency = "Daily";
+            }
+            else if (weeklyRadioBtn.Checked)
+            {
+                selectedFrequency = "Weekly";
+            }
+
+            string tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON  TANK_TASKS.Tank_Tasks_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TASKS.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type =\'{tank}\'";
+
+            Debug.WriteLine("\n\n\n" + tasksQuery + "\n\n\n");
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtTasks = new DataTable();
+
+            dbConnectObj.readDatathroughAdapter(tasksQuery, dtTasks);
+
+            if(dtTasks.Rows.Count >= 1)
+            {
+                dataGridView1.DataSource = dtTasks;
+            }
+            else
+            {
+                MessageBox.Show("No data found");
             }
         }
     }
