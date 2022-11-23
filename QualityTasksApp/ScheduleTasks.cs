@@ -170,6 +170,7 @@ namespace QualityTasksApp
         {
             var tank = comboBox4.SelectedValue;
             string selectedFrequency = "";
+            string tasksQuery = "";
 
             if (startUpRadioBtn.Checked)
             {
@@ -184,7 +185,15 @@ namespace QualityTasksApp
                 selectedFrequency = "Weekly";
             }
 
-            string tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type = \'{tank}\'";
+            if(selectedFrequency == "Daily" || selectedFrequency == "Weekly")
+            {
+                tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Type = '{tank}' AND Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\'";
+            }
+            else
+            {
+
+            tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type = \'{tank}\'";
+            }
 
             Debug.WriteLine("\n\n\n" + tasksQuery + "\n\n\n");
             DBAccess dbConnectObj = new DBAccess();
