@@ -129,29 +129,40 @@ namespace QualityTasksApp
 
         private void addTaskBtn_Click(object sender, EventArgs e)
         {
-            //ERROR: CAN ADD DATA THAT IS ALREADY THERE
-
 
             //get the ID of the selected values
             var tank = comboBox1.SelectedValue;
             var task = comboBox2.SelectedValue;
             var schedule = comboBox3.SelectedValue;
 
-            string sqlQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID) VALUES ({task},{tank},{schedule})";
+            string checkIfTankExistsQuery = $"SELECT * FROM TANK_TASKS WHERE TASK_ID = \'{task}\' AND TYPE_ID = \'{tank}\' AND Schedule_ID = \'{schedule}\'";
 
-            Debug.WriteLine("\n\n\n" + sqlQuery + "\n\n\n");
+            string addTankQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID) VALUES ({task},{tank},{schedule})";
+
+            Debug.WriteLine("\n\n\n Insert Task Query + " + addTankQuery + "\n\n\n");
 
             DBAccess dbConnectObj = new DBAccess();
 
-            SqlCommand insertCommand = new SqlCommand(sqlQuery);
+            DataTable dtCheck = new DataTable();
 
-            //execute our insert query
-            int row = dbConnectObj.executeQuery(insertCommand);
-
-            //execute query returns a one on successful add 
-            if (row == 1)
+            dbConnectObj.readDatathroughAdapter(checkIfTankExistsQuery, dtCheck);
+            if (dtCheck.Rows.Count == 0)
             {
-                MessageBox.Show("New Task Added Successfully");
+                    //if ~ exists insert
+                    DataTable dtTasks = new DataTable();
+                SqlCommand insertCommand = new SqlCommand(addTankQuery);
+
+                //execute our insert query
+                int row = dbConnectObj.executeQuery(insertCommand);
+
+                //execute query returns a one on successful add 
+                if (row == 1)
+                {
+                    MessageBox.Show("New Task Added Successfully");
+                }
+            }else
+            {
+                MessageBox.Show("Task already exists");
             }
         }
 
@@ -173,7 +184,7 @@ namespace QualityTasksApp
                 selectedFrequency = "Weekly";
             }
 
-            string tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON  TANK_TASKS.Tank_Tasks_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TASKS.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type =\'{tank}\'";
+            string tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type = \'{tank}\'";
 
             Debug.WriteLine("\n\n\n" + tasksQuery + "\n\n\n");
             DBAccess dbConnectObj = new DBAccess();
@@ -187,6 +198,7 @@ namespace QualityTasksApp
             }
             else
             {
+                dataGridView1.DataSource = dtTasks;
                 MessageBox.Show("No data found");
             }
         }
