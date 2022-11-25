@@ -38,5 +38,12 @@ namespace QualityTasksApp
             scheduleTaskForm.Show();
             this.Hide();
         }
+
+        private void assignTaskBtn_Click(object sender, EventArgs e)
+        {
+            AssignTasks assignTaskForm = new AssignTasks();
+            assignTaskForm.Show();
+            this.Hide();
+        }
     }
 }
