@@ -26,14 +26,17 @@ namespace QualityTasksApp
             DataTable dtTanks = new DataTable();
             DataTable dtTasks = new DataTable();
             DataTable dtSchedule = new DataTable();
+            DataTable dtLines = new DataTable();
 
             string TankQuery = $"SELECT * FROM TANK_TYPE";
             string TasksQuery = $"SELECT * FROM TASKS";
             string ScheduleQuery = $"SELECT * FROM TASK_SCHEDULE_KEY";
+            string LinesQuery = $"SELECT * FROM LINE";
 
             dbConnectObj.readDatathroughAdapter(TankQuery, dtTanks);
             dbConnectObj.readDatathroughAdapter(TasksQuery, dtTasks);
             dbConnectObj.readDatathroughAdapter(ScheduleQuery, dtSchedule);
+            dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines);
 
             if (dtTanks.Rows.Count >= 1)
             {
@@ -44,11 +47,6 @@ namespace QualityTasksApp
                 comboBox4.DataSource = dtTanks;
                 comboBox4.DisplayMember = "Type";
                 comboBox4.ValueMember = "Type";
-                //foreach (DataRow row in dtTanks.Rows)
-                //{
-
-                //    //comboBox1.Items.Add(row["Type"].ToString());
-                //}
             }
 
             if (dtTasks.Rows.Count >= 1)
@@ -56,10 +54,6 @@ namespace QualityTasksApp
                 comboBox2.DataSource = dtTasks;
                 comboBox2.DisplayMember = "Task";
                 comboBox2.ValueMember = "Task_ID";
-                //foreach (DataRow row in dtTasks.Rows)
-                //{
-                //    comboBox2.Items.Add(row["Task"].ToString());
-                //}
             }
 
 
@@ -68,10 +62,13 @@ namespace QualityTasksApp
                 comboBox3.DataSource = dtSchedule;
                 comboBox3.DisplayMember = "Schedule";
                 comboBox3.ValueMember = "Schedule_ID";
-                //foreach (DataRow row in dtSchedule.Rows)
-                //{
-                //    comboBox3.Items.Add(row["Schedule"].ToString());
-                //}
+            }
+
+            if (dtLines.Rows.Count >= 1)
+            {
+                lineComboBox.DataSource = dtLines;
+                lineComboBox.DisplayMember = "Line";
+                lineComboBox.ValueMember = "Line_ID";
             }
         }
 
@@ -127,6 +124,40 @@ namespace QualityTasksApp
             
         }
 
+        private void addTaskName_Click(object sender, EventArgs e)
+        {
+            string newTaskName = newTaskNameInput.Text;
+
+            DBAccess dbConnectObj = new DBAccess();
+
+            var sqlQuery = $"INSERT INTO TASKS (Task) VALUES (\'{newTaskName}\')";
+
+            SqlCommand insertCommand = new SqlCommand(sqlQuery);
+
+            int row = dbConnectObj.executeQuery(insertCommand);
+
+            if (row == 1)
+            {
+                MessageBox.Show("Tank Type added Successfully");
+                newTankTypeInput.Text = "";
+
+                DataTable dtTasks = new DataTable();
+                string TankQuery = $"SELECT * FROM TASKS";
+                dbConnectObj.readDatathroughAdapter(TankQuery, dtTasks);
+
+                if (dtTasks.Rows.Count >= 1)
+                {
+                    comboBox2.DataSource = dtTasks;
+                    comboBox2.DisplayMember = "Task";
+                    comboBox2.ValueMember = "Task_ID";
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Error occured while executing query");
+            }
+        }
         private void addTaskBtn_Click(object sender, EventArgs e)
         {
 
@@ -134,10 +165,11 @@ namespace QualityTasksApp
             var tank = comboBox1.SelectedValue;
             var task = comboBox2.SelectedValue;
             var schedule = comboBox3.SelectedValue;
+            var line = lineComboBox.SelectedValue;
 
-            string checkIfTankExistsQuery = $"SELECT * FROM TANK_TASKS WHERE TASK_ID = \'{task}\' AND TYPE_ID = \'{tank}\' AND Schedule_ID = \'{schedule}\'";
+            string checkIfTankExistsQuery = $"SELECT * FROM TANK_TASKS WHERE TASK_ID = \'{task}\' AND TYPE_ID = \'{tank}\' AND Schedule_ID = \'{schedule}\' AND Line_ID = \'{line}\'";
 
-            string addTankQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID) VALUES ({task},{tank},{schedule})";
+            string addTankQuery = $"INSERT INTO TANK_TASKS (Task_ID, Type_ID, Schedule_ID, Line_ID) VALUES ({task},{tank},{schedule}, {line})";
 
             Debug.WriteLine("\n\n\n Insert Task Query + " + addTankQuery + "\n\n\n");
 
@@ -187,12 +219,12 @@ namespace QualityTasksApp
 
             if(selectedFrequency == "Daily" || selectedFrequency == "Weekly")
             {
-                tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Type = '{tank}' AND Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\'";
+                tasksQuery = $"SELECT Line, Type, Schedule, Task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID INNER JOIN LINE ON TANK_TASKS.Line_ID = LINE.LIne_ID WHERE Type = '{tank}' AND Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\'";
             }
             else
             {
 
-            tasksQuery = $"SELECT Type, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID WHERE Schedule = \'{selectedFrequency}\' AND Type = \'{tank}\'";
+            tasksQuery = $"SELECT Line, Type, Schedule, Task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID INNER JOIN LINE ON TANK_TASKS.Line_ID = LINE.LIne_ID WHERE Schedule = \'{selectedFrequency}\' AND Type = \'{tank}\'";
             }
 
             Debug.WriteLine("\n\n\n" + tasksQuery + "\n\n\n");
@@ -211,5 +243,6 @@ namespace QualityTasksApp
                 MessageBox.Show("No data found");
             }
         }
+
     }
 }
