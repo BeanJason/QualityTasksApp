@@ -92,5 +92,11 @@ namespace QualityTasksApp
 
             
         }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AssignedTasks assignedTasksForm = new AssignedTasks();
+            assignedTasksForm.Show();
+            this.Hide();
+        }
     }
 }

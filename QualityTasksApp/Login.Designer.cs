@@ -31,6 +31,7 @@
             this.Email = new System.Windows.Forms.TextBox();
             this.Password = new System.Windows.Forms.TextBox();
             this.loginBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Email
@@ -48,6 +49,7 @@
             this.Password.PlaceholderText = "password";
             this.Password.Size = new System.Drawing.Size(395, 31);
             this.Password.TabIndex = 1;
+            this.Password.UseSystemPasswordChar = true;
             // 
             // loginBtn
             // 
@@ -59,11 +61,22 @@
             this.loginBtn.UseVisualStyleBackColor = true;
             this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(913, 612);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(257, 94);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "View Assigned Tasks";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1217, 736);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.loginBtn);
             this.Controls.Add(this.Password);
             this.Controls.Add(this.Email);
@@ -79,5 +92,6 @@
         private TextBox Email;
         private TextBox Password;
         private Button loginBtn;
+        private Button button1;
     }
 }

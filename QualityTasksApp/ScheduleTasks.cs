@@ -123,7 +123,6 @@ namespace QualityTasksApp
             }
             
         }
-
         private void addTaskName_Click(object sender, EventArgs e)
         {
             string newTaskName = newTaskNameInput.Text;
@@ -197,7 +196,6 @@ namespace QualityTasksApp
                 MessageBox.Show("Task already exists");
             }
         }
-
         private void viewBtn_Click(object sender, EventArgs e)
         {
             var tank = comboBox4.SelectedValue;
