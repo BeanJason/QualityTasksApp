@@ -27,17 +27,27 @@ namespace QualityTasksApp
             string Email = email.Text;
             string Password = password.Text;
             string Password2 = password2.Text;
+            string tech = "";
 
             DBAccess dbConnectObj = new DBAccess();
 
             string sqlQuery = "";
 
             if (Password == Password2){
+                if(Password.Length >= 6)
+                {
                 var newEmail = ConfigurationManager.AppSettings["email"];
-
+                    if (isManager.Checked)
+                    {
+                        tech = "manager";
+                    }
+                    else
+                    {
+                        tech = "tech";
+                    }
                 //INSERT INTO USERS (FirstName, LastName, email, password, role) VALUES ('Randy','Burchette','randy.burchette@plasticomnium.com','Plastic2022', 'manager');
                 //name int NOT NULL IDENTITY (1,1)
-                sqlQuery = $"INSERT INTO USERS (FirstName, LastName, Email, Password, Role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', 'tech')";
+                sqlQuery = $"INSERT INTO USERS (FirstName, LastName, Email, Password, Role) VALUES (\'{firstNameVal}\',\'{lastNameVal}\',\'{Email}\',\'{Password}\', \'{tech}\')";
 
                 Debug.WriteLine("\n\n\n\n\n" + "insert into Users " + sqlQuery + "\n\n\n\n\n");
                 Debug.WriteLine("email = " + newEmail);
@@ -57,7 +67,12 @@ namespace QualityTasksApp
                 lastName.Text = "";
                 email.Text = "";
                 password.Text = "";
-                password2.Text = ""; 
+                password2.Text = "";
+                }
+                else
+                {
+                    MessageBox.Show("Password must be at least 6 characters");
+                }
 
             } else{
                 Debug.WriteLine("Passwords do not match");

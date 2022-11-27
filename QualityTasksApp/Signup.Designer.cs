@@ -36,6 +36,8 @@
             this.Signup_SubmitBtn = new System.Windows.Forms.Button();
             this.Signup_BackBtn = new System.Windows.Forms.Button();
             this.Error_label = new System.Windows.Forms.Label();
+            this.isManager = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // firstName
@@ -80,7 +82,7 @@
             // 
             // Signup_SubmitBtn
             // 
-            this.Signup_SubmitBtn.Location = new System.Drawing.Point(760, 553);
+            this.Signup_SubmitBtn.Location = new System.Drawing.Point(760, 591);
             this.Signup_SubmitBtn.Name = "Signup_SubmitBtn";
             this.Signup_SubmitBtn.Size = new System.Drawing.Size(209, 87);
             this.Signup_SubmitBtn.TabIndex = 5;
@@ -90,7 +92,7 @@
             // 
             // Signup_BackBtn
             // 
-            this.Signup_BackBtn.Location = new System.Drawing.Point(320, 553);
+            this.Signup_BackBtn.Location = new System.Drawing.Point(320, 591);
             this.Signup_BackBtn.Name = "Signup_BackBtn";
             this.Signup_BackBtn.Size = new System.Drawing.Size(209, 87);
             this.Signup_BackBtn.TabIndex = 6;
@@ -106,11 +108,32 @@
             this.Error_label.Size = new System.Drawing.Size(0, 25);
             this.Error_label.TabIndex = 7;
             // 
+            // isManager
+            // 
+            this.isManager.AutoSize = true;
+            this.isManager.Location = new System.Drawing.Point(320, 517);
+            this.isManager.Name = "isManager";
+            this.isManager.Size = new System.Drawing.Size(108, 29);
+            this.isManager.TabIndex = 8;
+            this.isManager.Text = "Manager";
+            this.isManager.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(434, 518);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(575, 25);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "*Will create new user with all manager functions only select if intended*";
+            // 
             // Signup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1344, 889);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.isManager);
             this.Controls.Add(this.Error_label);
             this.Controls.Add(this.Signup_BackBtn);
             this.Controls.Add(this.Signup_SubmitBtn);
@@ -136,5 +159,7 @@
         private Button Signup_SubmitBtn;
         private Button Signup_BackBtn;
         private Label Error_label;
+        private CheckBox isManager;
+        private Label label1;
     }
 }
