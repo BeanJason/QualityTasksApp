@@ -62,7 +62,7 @@ namespace QualityTasksApp
                 {
                     MessageBox.Show("Account Created Successfully");
                 }
-
+                
                 firstName.Text = "";
                 lastName.Text = "";
                 email.Text = "";

@@ -64,20 +64,20 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(117, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 25);
+            this.label1.Size = new System.Drawing.Size(43, 25);
             this.label1.TabIndex = 2;
-            this.label1.Text = "User";
+            this.label1.Text = "Line";
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(344, 51);
+            this.dateTimePicker1.Location = new System.Drawing.Point(689, 44);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(300, 31);
             this.dateTimePicker1.TabIndex = 3;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(344, 117);
+            this.dateTimePicker2.Location = new System.Drawing.Point(689, 110);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(300, 31);
             this.dateTimePicker2.TabIndex = 4;
@@ -85,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(344, 22);
+            this.label2.Location = new System.Drawing.Point(689, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 25);
             this.label2.TabIndex = 5;
@@ -94,7 +94,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(344, 89);
+            this.label3.Location = new System.Drawing.Point(689, 82);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 25);
             this.label3.TabIndex = 6;
@@ -102,7 +102,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(677, 48);
+            this.button1.Location = new System.Drawing.Point(1022, 41);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 34);
             this.button1.TabIndex = 7;
@@ -111,7 +111,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(677, 117);
+            this.button2.Location = new System.Drawing.Point(1022, 110);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 34);
             this.button2.TabIndex = 8;

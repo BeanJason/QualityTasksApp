@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -21,27 +22,25 @@ namespace QualityTasksApp
         private void AssignTasks_Load(object sender, EventArgs e)
         {
             DBAccess dbConnectObj = new DBAccess();
-            DataTable dtEmployees = new DataTable();
             DataTable dtLines = new DataTable();
             DataTable dtFrequency = new DataTable();
+            DataTable dtTasks = new DataTable();
 
-            string UsersQuery = $"SELECT User_ID,(lastname + ', ' + firstName) AS NAME FROM USERS WHERE Role = 'tech'";
-            dbConnectObj.readDatathroughAdapter(UsersQuery, dtEmployees);
-
-            string linesQuery = $"SELECT * FROM LINE";
+            string linesQuery = $"SELECT * FROM LINES";
             dbConnectObj.readDatathroughAdapter(linesQuery, dtLines);
 
             string frequencyQuery = $"SELECT * FROM TASK_SCHEDULE_KEY";
             dbConnectObj.readDatathroughAdapter(frequencyQuery, dtFrequency);
 
-            if (dtEmployees.Rows.Count >= 1)
-            {
-                employeesComboBox.DataSource = dtEmployees;
-                employeesComboBox.DisplayMember = "name";
-                employeesComboBox.ValueMember = "User_ID";
-            }
+            string tasksQuery = $"SELECT * FROM TASKS";
+            dbConnectObj.readDatathroughAdapter(tasksQuery, dtTasks);
+
             if(dtLines.Rows.Count >= 1)
             {
+                lineComboBox2.DataSource = dtLines;
+                lineComboBox2.DisplayMember = "Line";
+                lineComboBox2.ValueMember = "Line_ID";
+
                 lineComboBox.DataSource = dtLines;
                 lineComboBox.DisplayMember = "Line";
                 lineComboBox.ValueMember = "Line_ID";
@@ -51,6 +50,12 @@ namespace QualityTasksApp
                 frequencyComboBox.DataSource = dtFrequency;
                 frequencyComboBox.DisplayMember = "Schedule";
                 frequencyComboBox.ValueMember = "Schedule_ID";
+            }
+            if(dtTasks.Rows.Count >= 1)
+            {
+                tasksComboBox.DataSource = dtTasks;
+                tasksComboBox.DisplayMember = "Task";
+                tasksComboBox.ValueMember = "Task_ID";
             }
         }
 
@@ -64,6 +69,30 @@ namespace QualityTasksApp
             ManagerHome managerHomeForm = new ManagerHome();
             managerHomeForm.Show();
             this.Hide();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lineComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtTankType = new DataTable();
+
+            string lineSelected = lineComboBox.Text;
+            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID WHERE Line = \'{lineSelected}\'";
+            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+            dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType);
+
+            if (dtTankType.Rows.Count >= 1)
+            {
+                tankTypeComboBox.DataSource = dtTankType;
+                tankTypeComboBox.DisplayMember = "Type";
+                tankTypeComboBox.ValueMember = "Type_ID";
+            }
         }
     }
 }
