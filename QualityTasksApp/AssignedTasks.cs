@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,54 +21,33 @@ namespace QualityTasksApp
         private void AssignedTasks_Load(object sender, EventArgs e)
         {
             DBAccess dbConnectObj = new DBAccess();
-            DataTable dtTasks = new DataTable();
-            DataTable dtEmployees = new DataTable();
+            DataTable dtLines = new DataTable();
 
-            string tasksQuery = "SELECT (FirstName + ' ' + LastName) AS Name, Line, Type, Task, Schedule, Date FROM ASSIGNED_TASKS INNER JOIN TANK_TASKS ON ASSIGNED_TASKS.Tank_Tasks_ID = TANK_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE ON TANK_TASKS.Line_ID = LINE.LIne_ID INNER JOIN USERS ON ASSIGNED_TASKS.User_ID = USERS.User_ID";
+            string LinesQuery = $"SELECT * FROM LINES";
 
-            string UsersQuery = $"SELECT User_ID,(lastname + ', ' + firstName) AS NAME FROM USERS WHERE Role = 'tech'";
+            dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines);
 
-            dbConnectObj.readDatathroughAdapter(tasksQuery, dtTasks);
-
-            dbConnectObj.readDatathroughAdapter(UsersQuery, dtEmployees);
-
-            if (dtTasks.Rows.Count >= 1)
+            if (dtLines.Rows.Count >= 1)
             {
-                taskDisplay.DataSource = dtTasks;
+                employeesComboBox.DataSource = dtLines;
+                employeesComboBox.DisplayMember = "Line";
+                employeesComboBox.ValueMember = "Line_ID";
             }
-            else
-            {
-                //taskDisplay.DataSource = dtTasks;
-                //MessageBox.Show("No data found");
-            }
-            if (dtEmployees.Rows.Count >= 1)
-            {
-                employeesComboBox.DataSource = dtEmployees;
-                employeesComboBox.DisplayMember = "name";
-                employeesComboBox.ValueMember = "User_ID";
-            }
+
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //view all btn clicked
+
             DBAccess dbConnectObj = new DBAccess();
             DataTable dtTasks = new DataTable();
 
-            string tasksQuery = "SELECT (FirstName + ' ' + LastName) AS Name, Line, Type, Task, Schedule, Date FROM ASSIGNED_TASKS INNER JOIN TANK_TASKS ON ASSIGNED_TASKS.Tank_Tasks_ID = TANK_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TANK_TYPE ON TANK_TASKS.Type_ID = TANK_TYPE.Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE ON TANK_TASKS.Line_ID = LINE.LIne_ID INNER JOIN USERS ON ASSIGNED_TASKS.User_ID = USERS.User_ID";
-
+            string tasksQuery = "";
 
             dbConnectObj.readDatathroughAdapter(tasksQuery, dtTasks);
 
-
-            if (dtTasks.Rows.Count >= 1)
-            {
-                taskDisplay.DataSource = dtTasks;
-            }
-            else
-            {
-                //taskDisplay.DataSource = dtTasks;
-                //MessageBox.Show("No data found");
-            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -75,6 +55,23 @@ namespace QualityTasksApp
             Login loginForm = new Login();
             loginForm.Show();
             this.Hide();
+        }
+
+        private void employeesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtTankType3 = new DataTable();
+
+            string lineSelected = employeesComboBox.Text;
+            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID WHERE Line = \'{lineSelected}\'";
+            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+            dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType3);
+
+            typeComboBox.Text = "";
+            typeComboBox.DataSource = dtTankType3;
+            typeComboBox.DisplayMember = "Type";
+            typeComboBox.ValueMember = "Type_ID";
         }
     }
 }
