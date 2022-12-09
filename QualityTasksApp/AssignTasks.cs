@@ -94,5 +94,15 @@ namespace QualityTasksApp
                 tankTypeComboBox.ValueMember = "Type_ID";
             }
         }
+
+        private void assignBtn_Click(object sender, EventArgs e)
+        {
+            var line = lineComboBox.SelectedValue;
+            var tankType = tankTypeComboBox.SelectedValue;
+            var frequency = frequencyComboBox.SelectedValue;
+            var task = tasksComboBox.SelectedValue;
+
+            //string insertQuery = $"INSERT INTO "
+        }
     }
 }

@@ -43,7 +43,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.frequencyComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.assignBtn = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tasksComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -182,14 +182,15 @@
             this.label7.TabIndex = 15;
             this.label7.Text = "Frequency";
             // 
-            // button1
+            // assignBtn
             // 
-            this.button1.Location = new System.Drawing.Point(104, 563);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 34);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Assign";
-            this.button1.UseVisualStyleBackColor = true;
+            this.assignBtn.Location = new System.Drawing.Point(104, 563);
+            this.assignBtn.Name = "assignBtn";
+            this.assignBtn.Size = new System.Drawing.Size(112, 34);
+            this.assignBtn.TabIndex = 16;
+            this.assignBtn.Text = "Assign";
+            this.assignBtn.UseVisualStyleBackColor = true;
+            this.assignBtn.Click += new System.EventHandler(this.assignBtn_Click);
             // 
             // button2
             // 
@@ -216,7 +217,7 @@
             this.ClientSize = new System.Drawing.Size(1299, 973);
             this.Controls.Add(this.tasksComboBox);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.assignBtn);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.frequencyComboBox);
             this.Controls.Add(this.label6);
@@ -259,7 +260,7 @@
         private Label label6;
         private ComboBox frequencyComboBox;
         private Label label7;
-        private Button button1;
+        private Button assignBtn;
         private Button button2;
         private ComboBox tasksComboBox;
     }

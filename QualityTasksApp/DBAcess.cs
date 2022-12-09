@@ -37,7 +37,6 @@ namespace QualityTasksApp
             }
         }
 
-
         public void closeConn()
         {
             connection.Close();

@@ -31,8 +31,8 @@
             this.taskDisplay = new System.Windows.Forms.DataGridView();
             this.employeesComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.fromDate = new System.Windows.Forms.DateTimePicker();
+            this.toDate = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -40,6 +40,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.typeComboBox = new System.Windows.Forms.ComboBox();
+            this.completeRadioBtn = new System.Windows.Forms.RadioButton();
+            this.incompleteRadioBtn = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.taskDisplay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,19 +73,19 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Line";
             // 
-            // dateTimePicker1
+            // fromDate
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(689, 44);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(300, 31);
-            this.dateTimePicker1.TabIndex = 3;
+            this.fromDate.Location = new System.Drawing.Point(689, 44);
+            this.fromDate.Name = "fromDate";
+            this.fromDate.Size = new System.Drawing.Size(300, 31);
+            this.fromDate.TabIndex = 3;
             // 
-            // dateTimePicker2
+            // toDate
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(689, 110);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(300, 31);
-            this.dateTimePicker2.TabIndex = 4;
+            this.toDate.Location = new System.Drawing.Point(689, 110);
+            this.toDate.Name = "toDate";
+            this.toDate.Size = new System.Drawing.Size(300, 31);
+            this.toDate.TabIndex = 4;
             // 
             // label2
             // 
@@ -149,11 +151,35 @@
             this.typeComboBox.Size = new System.Drawing.Size(182, 33);
             this.typeComboBox.TabIndex = 10;
             // 
+            // completeRadioBtn
+            // 
+            this.completeRadioBtn.AutoSize = true;
+            this.completeRadioBtn.Location = new System.Drawing.Point(527, 41);
+            this.completeRadioBtn.Name = "completeRadioBtn";
+            this.completeRadioBtn.Size = new System.Drawing.Size(114, 29);
+            this.completeRadioBtn.TabIndex = 12;
+            this.completeRadioBtn.TabStop = true;
+            this.completeRadioBtn.Text = "Complete";
+            this.completeRadioBtn.UseVisualStyleBackColor = true;
+            // 
+            // incompleteRadioBtn
+            // 
+            this.incompleteRadioBtn.AutoSize = true;
+            this.incompleteRadioBtn.Location = new System.Drawing.Point(527, 113);
+            this.incompleteRadioBtn.Name = "incompleteRadioBtn";
+            this.incompleteRadioBtn.Size = new System.Drawing.Size(126, 29);
+            this.incompleteRadioBtn.TabIndex = 13;
+            this.incompleteRadioBtn.TabStop = true;
+            this.incompleteRadioBtn.Text = "Incomplete";
+            this.incompleteRadioBtn.UseVisualStyleBackColor = true;
+            // 
             // AssignedTasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 784);
+            this.Controls.Add(this.incompleteRadioBtn);
+            this.Controls.Add(this.completeRadioBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.typeComboBox);
             this.Controls.Add(this.button3);
@@ -161,8 +187,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.dateTimePicker2);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.toDate);
+            this.Controls.Add(this.fromDate);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.employeesComboBox);
             this.Controls.Add(this.taskDisplay);
@@ -180,8 +206,8 @@
         private DataGridView taskDisplay;
         private ComboBox employeesComboBox;
         private Label label1;
-        private DateTimePicker dateTimePicker1;
-        private DateTimePicker dateTimePicker2;
+        private DateTimePicker fromDate;
+        private DateTimePicker toDate;
         private Label label2;
         private Label label3;
         private Button button1;
@@ -189,5 +215,7 @@
         private Button button3;
         private Label label4;
         private ComboBox typeComboBox;
+        private RadioButton completeRadioBtn;
+        private RadioButton incompleteRadioBtn;
     }
 }

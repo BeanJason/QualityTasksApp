@@ -43,11 +43,37 @@ namespace QualityTasksApp
 
             DBAccess dbConnectObj = new DBAccess();
             DataTable dtTasks = new DataTable();
+            var line = employeesComboBox.SelectedValue;
+            var tankType = typeComboBox.SelectedValue;
 
-            string tasksQuery = "";
+            DateTime from = fromDate.Value;
+            DateTime to = toDate.Value;
+            Debug.WriteLine($"\n\nfrom: {from} to: {to}\n\n");
 
-            dbConnectObj.readDatathroughAdapter(tasksQuery, dtTasks);
+            string completedTasksQuery = $"SELECT Line, Type, Task, Schedule, CONCAT(firstName, ' ', lastName) as Completed_BY, Date as Completed_ON FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN USERS ON COMPLETED_TASKS.User_ID = USERS.User_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE date > \'{from}\' AND Date < \'{to}\' AND LINES.Line_ID = {line} AND TANK_TYPES.Type_ID = {tankType}";
 
+            string incompletedTasksQuery = $"SELECT line, type, task, schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE LINES.Line_ID = {line} AND TANK_TYPES.Type_ID = {tankType} EXCEPT SELECT line, type, task, schedule FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
+
+            Debug.WriteLine($"\nincompletedQuery  {incompletedTasksQuery}\n");
+            Debug.WriteLine($"\ncompletedQuery  {completedTasksQuery}\n");
+
+            if (completeRadioBtn.Checked)
+            {
+                dbConnectObj.readDatathroughAdapter(completedTasksQuery, dtTasks);
+            }else if (incompleteRadioBtn.Checked)
+            {
+                dbConnectObj.readDatathroughAdapter(incompletedTasksQuery, dtTasks);
+            }
+
+            if (dtTasks.Rows.Count >= 1)
+            {
+                taskDisplay.DataSource = dtTasks;
+            }
+            else
+            {
+                taskDisplay.DataSource = dtTasks;
+                MessageBox.Show("No data found");
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
