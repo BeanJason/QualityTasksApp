@@ -46,6 +46,7 @@ namespace QualityTasksApp
             if(email != "" && password != "")
             {
                 dbConnectObj.readDatathroughAdapter(loginQuery, dtUsers);
+                string userId = "";
                 string firstName = "";
                 string lastName = "";
                 string userEmail = "";
@@ -61,12 +62,14 @@ namespace QualityTasksApp
                         lastName = row["lastName"].ToString();
                         userEmail = row["email"].ToString();
                         role = row["role"].ToString();
+                        userId = row["User_ID"].ToString();
                     }
 
                    ConfigurationManager.AppSettings["firstName"] = firstName;
                     ConfigurationManager.AppSettings["lastName"] = lastName;
                     ConfigurationManager.AppSettings["userEmail"] = userEmail;
                     ConfigurationManager.AppSettings["role"] = role;
+                    ConfigurationManager.AppSettings["userID"] = userId;
 
                     if (role == "manager")
                     {

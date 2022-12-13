@@ -218,7 +218,7 @@
             // 
             // viewBtn
             // 
-            this.viewBtn.Location = new System.Drawing.Point(1300, 171);
+            this.viewBtn.Location = new System.Drawing.Point(1169, 173);
             this.viewBtn.Name = "viewBtn";
             this.viewBtn.Size = new System.Drawing.Size(112, 34);
             this.viewBtn.TabIndex = 21;

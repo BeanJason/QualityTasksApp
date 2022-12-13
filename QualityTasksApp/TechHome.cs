@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 namespace QualityTasksApp
 {
@@ -38,6 +41,102 @@ namespace QualityTasksApp
             Login loginForm = new Login();
             loginForm.Show();
             this.Hide();
+        }
+
+        private void TechHome_Load(object sender, EventArgs e)
+        {
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtLines = new DataTable();
+            string LinesQuery = $"SELECT * FROM LINES";
+            dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines);
+
+            if (dtLines.Rows.Count >= 1)
+            {
+                lineComboBox.DataSource = dtLines;
+                lineComboBox.DisplayMember = "Line";
+                lineComboBox.ValueMember = "Line_ID";
+            }
+        }
+
+        private void lineComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtTankType3 = new DataTable();
+
+            string lineSelected = lineComboBox.Text;
+            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID WHERE Line = \'{lineSelected}\'";
+            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+            dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType3);
+
+            typeComboBox.Text = "";
+            typeComboBox.DataSource = dtTankType3;
+            typeComboBox.DisplayMember = "Type";
+            typeComboBox.ValueMember = "Type_ID";
+        }
+
+        private void viewBtn_Click(object sender, EventArgs e)
+        {
+            var lineID = lineComboBox.SelectedValue;
+            var tank = typeComboBox.SelectedValue;
+            //DateTime from = 
+            string selectedFrequency = "";
+            string tasksQuery = "";
+
+            if (startUpRadioBtn.Checked)
+            {
+                selectedFrequency = "Start Up";
+            }else if (dailyRadioBtn.Checked)
+            {
+                selectedFrequency = "daily";
+            }else if (weeklyBtn.Checked)
+            {
+                selectedFrequency = "Weekly";
+            }
+
+            if (selectedFrequency == "Daily" || selectedFrequency == "Weekly")
+            {
+                //$"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT line, type, task, schedule FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'"
+            }
+            else
+            {
+                
+            }
+
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtLines = new DataTable();
+            
+            dbConnectObj.readDatathroughAdapter(tasksQuery, dtLines);
+
+            if (dtLines.Rows.Count >= 1)
+            {
+                incompleteTasks.DataSource = dtLines;
+                incompleteTasks.DisplayMember = "task";
+                incompleteTasks.ValueMember = "tank_tasks_ID";
+            }
+        }
+
+        private void completeBtn_Click(object sender, EventArgs e)
+        {
+            var taskId = incompleteTasks.SelectedValue;
+            //actually will nvr be null bc have to be logged in to be here stupid IDE
+            var userId = int.Parse(ConfigurationManager.AppSettings["userID"]);
+            DateTime currDate = DateTime.Now;
+            string insertNewCompletedTask = $"INSERT INTO COMPLETED_TASKS (Tank_Tasks_ID, User_ID, Date) VALUES ({taskId}, {userId}, {currDate})";
+
+            DBAccess dbConnectObj = new DBAccess();
+            SqlCommand insertCommand = new SqlCommand(insertNewCompletedTask);
+
+            //execute our insert query
+            int row = dbConnectObj.executeQuery(insertCommand);
+
+            //execute query returns a one on successful add 
+            if (row == 1)
+            {
+                MessageBox.Show("Task Successfully completed");
+            }
+
+            //refresh combobox
         }
     }
 }
