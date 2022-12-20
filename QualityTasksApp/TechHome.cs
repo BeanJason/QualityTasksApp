@@ -79,7 +79,9 @@ namespace QualityTasksApp
         {
             var lineID = lineComboBox.SelectedValue;
             var tank = typeComboBox.SelectedValue;
-            //DateTime from = 
+            DateTime from = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+            DateTime to = DateTime.Now.LastDayOfWeek();
+
             string selectedFrequency = "";
             string tasksQuery = "";
 
@@ -96,12 +98,14 @@ namespace QualityTasksApp
 
             if (selectedFrequency == "Daily" || selectedFrequency == "Weekly")
             {
-                //$"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT line, type, task, schedule FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'"
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' OR TASK_SCHEDULE_KEY.Schecule = \'Daily/Weekly\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
             }
             else
             {
-                
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
             }
+
+            Debug.WriteLine(tasksQuery);
 
             DBAccess dbConnectObj = new DBAccess();
             DataTable dtLines = new DataTable();
@@ -122,7 +126,8 @@ namespace QualityTasksApp
             //actually will nvr be null bc have to be logged in to be here stupid IDE
             var userId = int.Parse(ConfigurationManager.AppSettings["userID"]);
             DateTime currDate = DateTime.Now;
-            string insertNewCompletedTask = $"INSERT INTO COMPLETED_TASKS (Tank_Tasks_ID, User_ID, Date) VALUES ({taskId}, {userId}, {currDate})";
+            string insertNewCompletedTask = $"INSERT INTO COMPLETED_TASKS (Tank_Tasks_ID, User_ID, Date) VALUES ({taskId}, {userId}, \'{currDate}\')";
+            Debug.WriteLine($"\n\ncomp task q = {insertNewCompletedTask}\n\n");
 
             DBAccess dbConnectObj = new DBAccess();
             SqlCommand insertCommand = new SqlCommand(insertNewCompletedTask);
@@ -134,9 +139,58 @@ namespace QualityTasksApp
             if (row == 1)
             {
                 MessageBox.Show("Task Successfully completed");
+            //refresh combobox
+            var lineID = lineComboBox.SelectedValue;
+            var tank = typeComboBox.SelectedValue;
+            DateTime from = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+            DateTime to = DateTime.Now.LastDayOfWeek();
+
+            Debug.WriteLine($"\n\nfrom: {from} to: {to}\n\n");
+            string selectedFrequency = "";
+            string tasksQuery = "";
+
+            if (startUpRadioBtn.Checked)
+            {
+                selectedFrequency = "Start Up";
+            }
+            else if (dailyRadioBtn.Checked)
+            {
+                selectedFrequency = "daily";
+            }
+            else if (weeklyBtn.Checked)
+            {
+                selectedFrequency = "Weekly";
             }
 
-            //refresh combobox
+            if (selectedFrequency == "Daily" || selectedFrequency == "Weekly")
+            {
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' OR TASK_SCHEDULE_KEY.Schecule = \'Daily/Weekly\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
+            }
+            else
+            {
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
+                Debug.WriteLine($"\n\ntq = {tasksQuery}\n\n");
+            }
+
+            DataTable dtLines = new DataTable();
+
+            dbConnectObj.readDatathroughAdapter(tasksQuery, dtLines);
+
+            if (dtLines.Rows.Count >= 1)
+            {
+                incompleteTasks.DataSource = dtLines;
+                incompleteTasks.DisplayMember = "task";
+                incompleteTasks.ValueMember = "tank_tasks_ID";
+                }
+                else
+                {
+                    incompleteTasks.DataSource = dtLines;
+                    incompleteTasks.DisplayMember = "task";
+                    incompleteTasks.ValueMember = "tank_tasks_ID";
+                    incompleteTasks.Text = "";
+                }
+            }
+
         }
     }
 }
