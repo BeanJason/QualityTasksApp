@@ -47,14 +47,24 @@ namespace QualityTasksApp
         {
             DBAccess dbConnectObj = new DBAccess();
             DataTable dtLines = new DataTable();
+            DataTable dtVersion = new DataTable();
             string LinesQuery = $"SELECT * FROM LINES";
+            string VersionQuery = $"SELECT * FROM TANK_VERSION";
+
             dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines);
+            dbConnectObj.readDatathroughAdapter(VersionQuery, dtVersion);
 
             if (dtLines.Rows.Count >= 1)
             {
                 lineComboBox.DataSource = dtLines;
                 lineComboBox.DisplayMember = "Line";
                 lineComboBox.ValueMember = "Line_ID";
+            }
+            if (dtVersion.Rows.Count >= 1)
+            {
+                versionComboBox1.DataSource = dtVersion;
+                versionComboBox1.DisplayMember = "Version";
+                versionComboBox1.ValueMember = "Version_ID";
             }
         }
 
@@ -64,7 +74,8 @@ namespace QualityTasksApp
             DataTable dtTankType3 = new DataTable();
 
             string lineSelected = lineComboBox.Text;
-            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID WHERE Line = \'{lineSelected}\'";
+            var versionSelected = versionComboBox1.Text;
+            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected}\' AND Version = \'{versionSelected}\'";
             Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
 
             dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType3);
@@ -79,6 +90,7 @@ namespace QualityTasksApp
         {
             var lineID = lineComboBox.SelectedValue;
             var tank = typeComboBox.SelectedValue;
+            var versionID = versionComboBox1.SelectedValue;
             DateTime from = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
             DateTime to = DateTime.Now.LastDayOfWeek();
 
@@ -98,11 +110,11 @@ namespace QualityTasksApp
 
             if (selectedFrequency == "Daily" || selectedFrequency == "Weekly")
             {
-                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' OR TASK_SCHEDULE_KEY.Schecule = \'Daily/Weekly\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = LINES.LIne_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE (TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' OR TASK_SCHEDULE_KEY.schedule = \'Daily/Weekly\') AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} AND TANK_VERSION.Version_ID = {versionID} EXCEPT SELECT completed_tasks.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = LINES.LIne_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE COMPLETED_TASKS.Date > '{from}' AND COMPLETED_TASKS.Date < '{to}'";
             }
             else
             {
-                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} EXCEPT SELECT TANK_TASKS.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_Type_ID = LINES.LIne_ID WHERE COMPLETED_TASKS.Date > \'{from}\' AND COMPLETED_TASKS.Date < \'{to}\'";
+                tasksQuery = $"SELECT tank_tasks_id, task FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = LINES.LIne_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE TASK_SCHEDULE_KEY.schedule = \'{selectedFrequency}\' AND LINES.Line_ID = {lineID} AND TANK_TYPES.Type_ID = {tank} AND TANK_VERSION.Version_ID = {versionID} EXCEPT SELECT completed_tasks.tank_tasks_id, task FROM TANK_TASKS INNER JOIN COMPLETED_TASKS ON TANK_TASKS.Tank_Tasks_ID = COMPLETED_TASKS.Tank_Tasks_ID INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Line_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = LINES.LIne_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE COMPLETED_TASKS.Date > '{from}' AND COMPLETED_TASKS.Date < '{to}'";
             }
 
             Debug.WriteLine(tasksQuery);
@@ -191,6 +203,24 @@ namespace QualityTasksApp
                 }
             }
 
+        }
+
+        private void versionComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DBAccess dbConnectObj = new DBAccess();
+            DataTable dtTankType3 = new DataTable();
+
+            string lineSelected = lineComboBox.Text;
+            var versionSelected = versionComboBox1.Text;
+            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected}\' AND Version = \'{versionSelected}\'";
+            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+            dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType3);
+
+            typeComboBox.Text = "";
+            typeComboBox.DataSource = dtTankType3;
+            typeComboBox.DisplayMember = "Type";
+            typeComboBox.ValueMember = "Type_ID";
         }
     }
 }

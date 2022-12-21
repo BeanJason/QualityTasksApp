@@ -41,6 +41,8 @@
             this.completeBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.incompleteTasks = new System.Windows.Forms.ComboBox();
+            this.versionComboBox1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // signOutBtn
@@ -75,7 +77,7 @@
             // typeComboBox
             // 
             this.typeComboBox.FormattingEnabled = true;
-            this.typeComboBox.Location = new System.Drawing.Point(649, 331);
+            this.typeComboBox.Location = new System.Drawing.Point(649, 413);
             this.typeComboBox.Name = "typeComboBox";
             this.typeComboBox.Size = new System.Drawing.Size(182, 33);
             this.typeComboBox.TabIndex = 5;
@@ -92,7 +94,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(649, 298);
+            this.label3.Location = new System.Drawing.Point(649, 380);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 25);
             this.label3.TabIndex = 7;
@@ -133,7 +135,7 @@
             // 
             // viewBtn
             // 
-            this.viewBtn.Location = new System.Drawing.Point(631, 393);
+            this.viewBtn.Location = new System.Drawing.Point(631, 475);
             this.viewBtn.Name = "viewBtn";
             this.viewBtn.Size = new System.Drawing.Size(221, 34);
             this.viewBtn.TabIndex = 12;
@@ -143,7 +145,7 @@
             // 
             // completeBtn
             // 
-            this.completeBtn.Location = new System.Drawing.Point(618, 534);
+            this.completeBtn.Location = new System.Drawing.Point(618, 616);
             this.completeBtn.Name = "completeBtn";
             this.completeBtn.Size = new System.Drawing.Size(281, 69);
             this.completeBtn.TabIndex = 14;
@@ -154,7 +156,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(631, 453);
+            this.label4.Location = new System.Drawing.Point(631, 535);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(150, 25);
             this.label4.TabIndex = 15;
@@ -163,16 +165,36 @@
             // incompleteTasks
             // 
             this.incompleteTasks.FormattingEnabled = true;
-            this.incompleteTasks.Location = new System.Drawing.Point(618, 481);
+            this.incompleteTasks.Location = new System.Drawing.Point(618, 563);
             this.incompleteTasks.Name = "incompleteTasks";
             this.incompleteTasks.Size = new System.Drawing.Size(281, 33);
             this.incompleteTasks.TabIndex = 16;
+            // 
+            // versionComboBox1
+            // 
+            this.versionComboBox1.FormattingEnabled = true;
+            this.versionComboBox1.Location = new System.Drawing.Point(649, 330);
+            this.versionComboBox1.Name = "versionComboBox1";
+            this.versionComboBox1.Size = new System.Drawing.Size(182, 33);
+            this.versionComboBox1.TabIndex = 17;
+            this.versionComboBox1.SelectedIndexChanged += new System.EventHandler(this.versionComboBox1_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(649, 302);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(70, 25);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Version";
             // 
             // TechHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1511, 994);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.versionComboBox1);
             this.Controls.Add(this.incompleteTasks);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.completeBtn);
@@ -208,5 +230,7 @@
         private Button completeBtn;
         private Label label4;
         private ComboBox incompleteTasks;
+        private ComboBox versionComboBox1;
+        private Label label5;
     }
 }
