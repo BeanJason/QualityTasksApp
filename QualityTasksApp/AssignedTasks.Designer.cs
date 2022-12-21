@@ -35,13 +35,14 @@
             this.toDate = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.typeComboBox = new System.Windows.Forms.ComboBox();
             this.completeRadioBtn = new System.Windows.Forms.RadioButton();
             this.incompleteRadioBtn = new System.Windows.Forms.RadioButton();
+            this.versionComboBox1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.taskDisplay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,22 +106,13 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "To";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1022, 41);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 34);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "View";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(1022, 110);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 34);
             this.button2.TabIndex = 8;
-            this.button2.Text = "View All";
+            this.button2.Text = "View";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -173,18 +165,37 @@
             this.incompleteRadioBtn.Text = "Incomplete";
             this.incompleteRadioBtn.UseVisualStyleBackColor = true;
             // 
+            // versionComboBox1
+            // 
+            this.versionComboBox1.FormattingEnabled = true;
+            this.versionComboBox1.Location = new System.Drawing.Point(303, 50);
+            this.versionComboBox1.Name = "versionComboBox1";
+            this.versionComboBox1.Size = new System.Drawing.Size(182, 33);
+            this.versionComboBox1.TabIndex = 14;
+            this.versionComboBox1.SelectedIndexChanged += new System.EventHandler(this.versionComboBox1_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(303, 22);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 25);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Version:";
+            // 
             // AssignedTasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 784);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.versionComboBox1);
             this.Controls.Add(this.incompleteRadioBtn);
             this.Controls.Add(this.completeRadioBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.typeComboBox);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.toDate);
@@ -210,12 +221,13 @@
         private DateTimePicker toDate;
         private Label label2;
         private Label label3;
-        private Button button1;
         private Button button2;
         private Button button3;
         private Label label4;
         private ComboBox typeComboBox;
         private RadioButton completeRadioBtn;
         private RadioButton incompleteRadioBtn;
+        private ComboBox versionComboBox1;
+        private Label label5;
     }
 }

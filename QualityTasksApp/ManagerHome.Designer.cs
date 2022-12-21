@@ -57,7 +57,7 @@
             // 
             // scheduleTasksBtn
             // 
-            this.scheduleTasksBtn.Location = new System.Drawing.Point(588, 502);
+            this.scheduleTasksBtn.Location = new System.Drawing.Point(588, 339);
             this.scheduleTasksBtn.Name = "scheduleTasksBtn";
             this.scheduleTasksBtn.Size = new System.Drawing.Size(293, 77);
             this.scheduleTasksBtn.TabIndex = 2;
@@ -67,22 +67,24 @@
             // 
             // assignTaskBtn
             // 
-            this.assignTaskBtn.Location = new System.Drawing.Point(588, 606);
+            this.assignTaskBtn.Location = new System.Drawing.Point(12, 723);
             this.assignTaskBtn.Name = "assignTaskBtn";
-            this.assignTaskBtn.Size = new System.Drawing.Size(293, 77);
+            this.assignTaskBtn.Size = new System.Drawing.Size(50, 38);
             this.assignTaskBtn.TabIndex = 3;
             this.assignTaskBtn.Text = "Assign Task";
             this.assignTaskBtn.UseVisualStyleBackColor = true;
+            this.assignTaskBtn.Visible = false;
             this.assignTaskBtn.Click += new System.EventHandler(this.assignTaskBtn_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(588, 395);
+            this.button1.Location = new System.Drawing.Point(12, 767);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(293, 77);
+            this.button1.Size = new System.Drawing.Size(50, 33);
             this.button1.TabIndex = 4;
             this.button1.Text = "Add Parts";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ManagerHome
