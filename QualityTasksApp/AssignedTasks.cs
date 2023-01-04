@@ -66,23 +66,29 @@ namespace QualityTasksApp
 
             Debug.WriteLine($"\nincompletedQuery  {incompletedTasksQuery}\n");
             Debug.WriteLine($"\ncompletedQuery  {completedTasksQuery}\n");
+            if(tankType != null)
+            {
+                if (completeRadioBtn.Checked)
+                {
+                    dbConnectObj.readDatathroughAdapter(completedTasksQuery, dtTasks);
+                }else if (incompleteRadioBtn.Checked)
+                {
+                    dbConnectObj.readDatathroughAdapter(incompletedTasksQuery, dtTasks);
+                }
 
-            if (completeRadioBtn.Checked)
-            {
-                dbConnectObj.readDatathroughAdapter(completedTasksQuery, dtTasks);
-            }else if (incompleteRadioBtn.Checked)
-            {
-                dbConnectObj.readDatathroughAdapter(incompletedTasksQuery, dtTasks);
-            }
-
-            if (dtTasks.Rows.Count >= 1)
-            {
-                taskDisplay.DataSource = dtTasks;
+                if (dtTasks.Rows.Count >= 1)
+                {
+                    taskDisplay.DataSource = dtTasks;
+                }
+                else
+                {
+                    taskDisplay.DataSource = dtTasks;
+                    MessageBox.Show("No data found");
+                }
             }
             else
             {
-                taskDisplay.DataSource = dtTasks;
-                MessageBox.Show("No data found");
+                MessageBox.Show("No Tank Type Selected");
             }
         }
 

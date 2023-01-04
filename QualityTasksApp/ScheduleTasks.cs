@@ -32,6 +32,8 @@ namespace QualityTasksApp
             DataTable dtLines2 = new DataTable();
             DataTable dtLines3 = new DataTable();
             DataTable dtVersion = new DataTable();
+            DataTable dtVersion2 = new DataTable();
+            DataTable dtVersion3 = new DataTable();
 
 
             string TankQuery = $"SELECT * FROM TANK_TYPES";
@@ -47,6 +49,8 @@ namespace QualityTasksApp
             dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines2);
             dbConnectObj.readDatathroughAdapter(LinesQuery, dtLines3);
             dbConnectObj.readDatathroughAdapter(VersionQuery, dtVersion);
+            dbConnectObj.readDatathroughAdapter(VersionQuery, dtVersion2);
+            dbConnectObj.readDatathroughAdapter(VersionQuery, dtVersion3);
 
             if (dtTanks.Rows.Count >= 1)
             {
@@ -91,11 +95,11 @@ namespace QualityTasksApp
                 versionComboBox1.DisplayMember = "Version";
                 versionComboBox1.ValueMember = "Version_ID";
 
-                versionComboBox2.DataSource = dtVersion;
+                versionComboBox2.DataSource = dtVersion2;
                 versionComboBox2.DisplayMember = "Version";
                 versionComboBox2.ValueMember = "Version_ID";
 
-                versionComboBox3.DataSource = dtVersion;
+                versionComboBox3.DataSource = dtVersion3;
                 versionComboBox3.DisplayMember = "Version";
                 versionComboBox3.ValueMember = "Version_ID";
             }
@@ -127,23 +131,82 @@ namespace QualityTasksApp
             var checkForTankTypeQuery = $"SELECT * FROM TANK_TYPES WHERE Type = (\'{newTankType}\')";
 
             var sqlQuery = $"INSERT INTO TANK_TYPES (Type) VALUES (\'{newTankType}\')";
-
-            DataTable dtCheck = new DataTable();
-
-            dbConnectObj.readDatathroughAdapter(checkForTankTypeQuery, dtCheck);
-
-            if(dtCheck.Rows.Count == 0)
+            if(newTankType != "")
             {
-                //insert into Tank_TYPES
-                SqlCommand insertCommand = new SqlCommand(sqlQuery);
+                DataTable dtCheck = new DataTable();
 
-                int row = dbConnectObj.executeQuery(insertCommand);
+                dbConnectObj.readDatathroughAdapter(checkForTankTypeQuery, dtCheck);
 
-                if(row == 1)
+                if(dtCheck.Rows.Count == 0)
                 {
-                    //MessageBox.Show("Tank Type added Successfully");
+                    //insert into Tank_TYPES
+                    SqlCommand insertCommand = new SqlCommand(sqlQuery);
 
-                    //Get the ID of the newly added tank
+                    int row = dbConnectObj.executeQuery(insertCommand);
+
+                    if(row == 1)
+                    {
+                        //MessageBox.Show("Tank Type added Successfully");
+
+                        //Get the ID of the newly added tank
+                        DataTable dtTanks = new DataTable();
+                        string TankQuery = $"SELECT Type_ID FROM TANK_TYPES WHERE Type = \'{newTankType}\'";
+
+                        dbConnectObj.readDatathroughAdapter(TankQuery, dtTanks);
+
+                        //Store ID of newly added tank as well as selected line ID into LINE_TYPES table
+
+                        typeID = dtTanks.Rows[0].Field<int>("Type_ID");
+
+                        var lineTypesInsertQuery = $"INSERT INTO LINE_TYPES (Type_ID, Line_ID, Version_ID) VALUES ({typeID}, {lineID}, {versionID})";
+                        Debug.WriteLine($"\n\nlineTypesInsertQuery = {lineTypesInsertQuery}\n\n");
+                        insertCommand = new SqlCommand(lineTypesInsertQuery);
+
+                        //execute our insert query
+                        row = dbConnectObj.executeQuery(insertCommand);
+
+                    if(row == 1)
+                        {
+                            MessageBox.Show("Line type added");
+                            //refresh tank type comboboxes
+                            DataTable dtTankType = new DataTable();
+
+                            string lineSelected = comboBox1.Text;
+                            string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected}\' AND LINE_TYPES.Version_ID = {versionID}";
+                            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+                            dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType);
+
+                            comboBox4.Text = "";
+                            comboBox4.DataSource = dtTankType;
+                            comboBox4.DisplayMember = "Type";
+                            comboBox4.ValueMember = "Type_ID";
+
+                            DataTable dtTankType2 = new DataTable();
+                        
+                            string lineSelected2 = lineComboBox.Text;
+                            string tankTypeQuery2 = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected2}\' AND LINE_TYPES.Version_ID = {versionID2}";
+                            Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+
+                            dbConnectObj.readDatathroughAdapter(tankTypeQuery2, dtTankType2);
+
+                            tankTypeComboBox.Text = "";
+                            tankTypeComboBox.DataSource = dtTankType2;
+                            tankTypeComboBox.DisplayMember = "Type";
+                            tankTypeComboBox.ValueMember = "Type_ID";
+                        }
+
+                        newTankTypeInput.Text = "";
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error occured while executing query");
+                    }
+                }
+                else //In this case a tank type that already exist is being added to a new line
+                {
+                
                     DataTable dtTanks = new DataTable();
                     string TankQuery = $"SELECT Type_ID FROM TANK_TYPES WHERE Type = \'{newTankType}\'";
 
@@ -153,89 +216,36 @@ namespace QualityTasksApp
 
                     typeID = dtTanks.Rows[0].Field<int>("Type_ID");
 
-                    var lineTypesInsertQuery = $"INSERT INTO LINE_TYPES (Type_ID, Line_ID, Version_ID) VALUES ({typeID}, {lineID}, {versionID})";
-                    Debug.WriteLine($"\n\nlineTypesInsertQuery = {lineTypesInsertQuery}\n\n");
-                    insertCommand = new SqlCommand(lineTypesInsertQuery);
+                    //Check if tank type already exists for line
+                    string lineTypeExistsQuery = $"SELECT * FROM LINE_TYPES WHERE line_ID = {lineID} AND Type_ID = {typeID} AND Version_ID = {versionID}";
+                    DataTable dtTLineTypes = new DataTable();
+                    dbConnectObj.readDatathroughAdapter(lineTypeExistsQuery, dtTLineTypes);
 
-                    //execute our insert query
-                    row = dbConnectObj.executeQuery(insertCommand);
-
-                if(row == 1)
+                    if(dtTLineTypes.Rows.Count == 0)
                     {
-                        MessageBox.Show("Line type added");
-                        //refresh tank type comboboxes
-                        DataTable dtTankType = new DataTable();
+                        string insertLineType = $"INSERT INTO LINE_TYPES (Type_ID, Line_ID, Version_ID) VALUES ({typeID},{lineID}, {versionID})";
 
-                        string lineSelected = comboBox1.Text;
-                        string tankTypeQuery = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected}\' AND LINE_TYPES.Version_ID = {versionID}";
-                        Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
+                        Debug.WriteLine($"\n\ninsertLineTypeQuery = {insertLineType}\n\n");
 
-                        dbConnectObj.readDatathroughAdapter(tankTypeQuery, dtTankType);
+                        SqlCommand insertCommand = new SqlCommand(insertLineType);
 
-                        comboBox4.Text = "";
-                        comboBox4.DataSource = dtTankType;
-                        comboBox4.DisplayMember = "Type";
-                        comboBox4.ValueMember = "Type_ID";
+                        int row = dbConnectObj.executeQuery(insertCommand);
 
-                        DataTable dtTankType2 = new DataTable();
-                        
-                        string lineSelected2 = lineComboBox.Text;
-                        string tankTypeQuery2 = $"SELECT Type, TANK_TYPES.TYPE_ID FROM LINE_TYPES INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN LINES ON LINE_TYPES.Line_ID = Lines.Line_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE Line = \'{lineSelected2}\' AND LINE_TYPES.Version_ID = {versionID2}";
-                        Debug.WriteLine($"\n\n{tankTypeQuery}\n\n");
-
-                        dbConnectObj.readDatathroughAdapter(tankTypeQuery2, dtTankType2);
-
-                        tankTypeComboBox.Text = "";
-                        tankTypeComboBox.DataSource = dtTankType2;
-                        tankTypeComboBox.DisplayMember = "Type";
-                        tankTypeComboBox.ValueMember = "Type_ID";
+                        if(row == 1)
+                        {
+                            MessageBox.Show("Line type added");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tank Type Already Exists For This Line.");
                     }
 
-                    newTankTypeInput.Text = "";
-
-                }
-                else
-                {
-                    MessageBox.Show("Error occured while executing query");
                 }
             }
-            else //In this case a tank type that already exist is being added to a new line
+            else
             {
-                
-                DataTable dtTanks = new DataTable();
-                string TankQuery = $"SELECT Type_ID FROM TANK_TYPES WHERE Type = \'{newTankType}\'";
-
-                dbConnectObj.readDatathroughAdapter(TankQuery, dtTanks);
-
-                //Store ID of newly added tank as well as selected line ID into LINE_TYPES table
-
-                typeID = dtTanks.Rows[0].Field<int>("Type_ID");
-
-                //Check if tank type already exists for line
-                string lineTypeExistsQuery = $"SELECT * FROM LINE_TYPES WHERE line_ID = {lineID} AND Type_ID = {typeID} AND Version_ID = {versionID}";
-                DataTable dtTLineTypes = new DataTable();
-                dbConnectObj.readDatathroughAdapter(lineTypeExistsQuery, dtTLineTypes);
-
-                if(dtTLineTypes.Rows.Count == 0)
-                {
-                    string insertLineType = $"INSERT INTO LINE_TYPES (Type_ID, Line_ID, Version_ID) VALUES ({typeID},{lineID}, {versionID})";
-
-                    Debug.WriteLine($"\n\ninsertLineTypeQuery = {insertLineType}\n\n");
-
-                    SqlCommand insertCommand = new SqlCommand(insertLineType);
-
-                    int row = dbConnectObj.executeQuery(insertCommand);
-
-                    if(row == 1)
-                    {
-                        MessageBox.Show("Line type added");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Tank Type Already Exists For This Line.");
-                }
-
+                MessageBox.Show("Please Enter Tank Type");
             }
             
         }
@@ -255,30 +265,37 @@ namespace QualityTasksApp
 
             if(dtCheck.Rows.Count == 0)
             {
-                SqlCommand insertCommand = new SqlCommand(sqlQuery);
-
-                int row = dbConnectObj.executeQuery(insertCommand);
-
-                if (row == 1)
+                if(newTaskName != "")
                 {
-                    MessageBox.Show("Tank Type added Successfully");
-                    newTankTypeInput.Text = "";
+                    SqlCommand insertCommand = new SqlCommand(sqlQuery);
 
-                    DataTable dtTasks = new DataTable();
-                    string TankQuery = $"SELECT * FROM TASKS";
-                    dbConnectObj.readDatathroughAdapter(TankQuery, dtTasks);
+                    int row = dbConnectObj.executeQuery(insertCommand);
 
-                    if (dtTasks.Rows.Count >= 1)
+                    if (row == 1)
                     {
-                        comboBox2.DataSource = dtTasks;
-                        comboBox2.DisplayMember = "Task";
-                        comboBox2.ValueMember = "Task_ID";
-                    }
+                        MessageBox.Show("Tank Type added Successfully");
+                        newTankTypeInput.Text = "";
 
+                        DataTable dtTasks = new DataTable();
+                        string TankQuery = $"SELECT * FROM TASKS";
+                        dbConnectObj.readDatathroughAdapter(TankQuery, dtTasks);
+
+                        if (dtTasks.Rows.Count >= 1)
+                        {
+                            comboBox2.DataSource = dtTasks;
+                            comboBox2.DisplayMember = "Task";
+                            comboBox2.ValueMember = "Task_ID";
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error occured while executing query");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Error occured while executing query");
+                    MessageBox.Show("Please Enter Tank Name");
                 }
             }
             else
@@ -298,46 +315,52 @@ namespace QualityTasksApp
             var version = versionComboBox2.SelectedValue;
 
             string findLineTypeID = $"SELECT Line_Type_ID FROM LINE_TYPES INNER JOIN LINES ON LINE_TYPES.Line_ID = LINES.LIne_ID INNER JOIN TANK_TYPES ON LINE_TYPES.Type_ID = TANK_TYPES.Type_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE LINES.Line_ID = \'{line}\' AND TANK_TYPES.Type_ID = \'{tank}\' AND TANK_VERSION.Version_ID = {version}";
-
-            DBAccess dbConnectObj = new DBAccess();
-
-            //get the LINE_TYPE_ID
-            DataTable dtLineType = new DataTable();
-
-            dbConnectObj.readDatathroughAdapter(findLineTypeID, dtLineType);
-
-            if(dtLineType.Rows.Count > 0)
+            if (tank != null && task != null && schedule != null && line != null && version != null)
             {
-                var line_type_ID = dtLineType.Rows[0].Field<int>("Line_Type_ID");
+                DBAccess dbConnectObj = new DBAccess();
 
-                string checkIfTankExistsQuery = $"SELECT * FROM TANK_TASKS WHERE Line_Type_ID = {line_type_ID} AND Schedule_ID = \'{schedule}\' AND Task_ID = \'{line}\'";
+                //get the LINE_TYPE_ID
+                DataTable dtLineType = new DataTable();
 
-                string addTankQuery = $"INSERT INTO TANK_TASKS (Task_ID, Schedule_ID, Line_Type_ID) VALUES ({task},{schedule}, {line_type_ID})";
+                dbConnectObj.readDatathroughAdapter(findLineTypeID, dtLineType);
 
-                Debug.WriteLine("\n\n\n Insert Task Query + " + addTankQuery + "\n\n\n");
-
-                DataTable dtCheck = new DataTable();
-
-                dbConnectObj.readDatathroughAdapter(checkIfTankExistsQuery, dtCheck);
-
-                if (dtCheck.Rows.Count == 0)
+                if(dtLineType.Rows.Count > 0)
                 {
-                        //if ~ exists insert
-                        DataTable dtTasks = new DataTable();
-                    SqlCommand insertCommand = new SqlCommand(addTankQuery);
+                    var line_type_ID = dtLineType.Rows[0].Field<int>("Line_Type_ID");
 
-                    //execute our insert query
-                    int row = dbConnectObj.executeQuery(insertCommand);
+                    string checkIfTankExistsQuery = $"SELECT * FROM TANK_TASKS WHERE Line_Type_ID = {line_type_ID} AND Schedule_ID = \'{schedule}\' AND Task_ID = \'{line}\'";
 
-                    //execute query returns a one on successful add 
-                    if (row == 1)
+                    string addTankQuery = $"INSERT INTO TANK_TASKS (Task_ID, Schedule_ID, Line_Type_ID) VALUES ({task},{schedule}, {line_type_ID})";
+
+                    Debug.WriteLine("\n\n\n Insert Task Query + " + addTankQuery + "\n\n\n");
+
+                    DataTable dtCheck = new DataTable();
+
+                    dbConnectObj.readDatathroughAdapter(checkIfTankExistsQuery, dtCheck);
+
+                    if (dtCheck.Rows.Count == 0)
                     {
-                        MessageBox.Show("New Task Added Successfully");
+                            //if ~ exists insert
+                            DataTable dtTasks = new DataTable();
+                        SqlCommand insertCommand = new SqlCommand(addTankQuery);
+
+                        //execute our insert query
+                        int row = dbConnectObj.executeQuery(insertCommand);
+
+                        //execute query returns a one on successful add 
+                        if (row == 1)
+                        {
+                            MessageBox.Show("New Task Added Successfully");
+                        }
+                    }else
+                    {
+                        MessageBox.Show("Task already exists");
                     }
-                }else
-                {
-                    MessageBox.Show("Task already exists");
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please make sure all fields are selected");
             }
 
         }
@@ -361,14 +384,24 @@ namespace QualityTasksApp
             {
                 selectedFrequency = "Weekly";
             }
-
-            if(selectedFrequency == "Daily" || selectedFrequency == "Weekly")
+            else
             {
-                tasksQuery = $"SELECT Version, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE (Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\') AND Line_types.Type_ID = {tank} AND Line_Types.Line_ID = {lineID} AND Tank_Version.Version_ID = {versionID} ORDER BY Schedule";
+                selectedFrequency = "Start Up";
+            }
+            if(tank != null)
+            {
+                if(selectedFrequency == "Daily" || selectedFrequency == "Weekly")
+                {
+                    tasksQuery = $"SELECT Version, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE (Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\') AND Line_types.Type_ID = {tank} AND Line_Types.Line_ID = {lineID} AND Tank_Version.Version_ID = {versionID} ORDER BY Schedule";
+                }
+                else
+                {
+                    tasksQuery = $"SELECT version, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE (Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\') AND Line_types.Type_ID = {tank} AND Line_Types.Line_ID = {lineID} AND Tank_Version.Version_ID = {versionID} ORDER BY Schedule";
+                }
             }
             else
             {
-                tasksQuery = $"SELECT version, Task, Schedule FROM TANK_TASKS INNER JOIN TASKS ON TANK_TASKS.Task_ID = TASKS.Task_ID INNER JOIN LINE_TYPES ON TANK_TASKS.Line_Type_ID = LINE_TYPES.Line_Type_ID INNER JOIN TASK_SCHEDULE_KEY ON TANK_TASKS.Schedule_ID = TASK_SCHEDULE_KEY.Schedule_ID INNER JOIN TANK_VERSION ON LINE_TYPES.Version_ID = TANK_VERSION.Version_ID WHERE (Schedule = \'{selectedFrequency}\' OR Schedule = \'Daily/Weekly\') AND Line_types.Type_ID = {tank} AND Line_Types.Line_ID = {lineID} Tank_Version.Version_ID = {versionID} ORDER BY Schedule";
+                MessageBox.Show("No Tank Type Selected");
             }
 
             Debug.WriteLine("\n\n\n" + tasksQuery + "\n\n\n");

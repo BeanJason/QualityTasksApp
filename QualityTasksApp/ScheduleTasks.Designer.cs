@@ -67,6 +67,10 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.versionComboBox3 = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -86,7 +90,7 @@
             // dailyRadioBtn
             // 
             this.dailyRadioBtn.AutoSize = true;
-            this.dailyRadioBtn.Location = new System.Drawing.Point(1217, 119);
+            this.dailyRadioBtn.Location = new System.Drawing.Point(1201, 119);
             this.dailyRadioBtn.Name = "dailyRadioBtn";
             this.dailyRadioBtn.Size = new System.Drawing.Size(76, 29);
             this.dailyRadioBtn.TabIndex = 1;
@@ -97,7 +101,7 @@
             // weeklyRadioBtn
             // 
             this.weeklyRadioBtn.AutoSize = true;
-            this.weeklyRadioBtn.Location = new System.Drawing.Point(1319, 116);
+            this.weeklyRadioBtn.Location = new System.Drawing.Point(1295, 119);
             this.weeklyRadioBtn.Name = "weeklyRadioBtn";
             this.weeklyRadioBtn.Size = new System.Drawing.Size(93, 29);
             this.weeklyRadioBtn.TabIndex = 2;
@@ -118,7 +122,7 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(19, 314);
+            this.comboBox2.Location = new System.Drawing.Point(19, 248);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(182, 33);
             this.comboBox2.TabIndex = 5;
@@ -126,7 +130,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 275);
+            this.label2.Location = new System.Drawing.Point(19, 220);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 25);
             this.label2.TabIndex = 6;
@@ -153,7 +157,7 @@
             // backBtn
             // 
             this.backBtn.AllowDrop = true;
-            this.backBtn.Location = new System.Drawing.Point(108, 969);
+            this.backBtn.Location = new System.Drawing.Point(108, 871);
             this.backBtn.Name = "backBtn";
             this.backBtn.Size = new System.Drawing.Size(112, 34);
             this.backBtn.TabIndex = 12;
@@ -163,7 +167,7 @@
             // 
             // newTankTypeInput
             // 
-            this.newTankTypeInput.Location = new System.Drawing.Point(13, 141);
+            this.newTankTypeInput.Location = new System.Drawing.Point(13, 124);
             this.newTankTypeInput.Name = "newTankTypeInput";
             this.newTankTypeInput.PlaceholderText = "Add new tank type";
             this.newTankTypeInput.Size = new System.Drawing.Size(172, 31);
@@ -172,7 +176,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 101);
+            this.label4.Location = new System.Drawing.Point(13, 84);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(166, 25);
             this.label4.TabIndex = 14;
@@ -180,7 +184,7 @@
             // 
             // newTankTypeBtn
             // 
-            this.newTankTypeBtn.Location = new System.Drawing.Point(321, 372);
+            this.newTankTypeBtn.Location = new System.Drawing.Point(321, 379);
             this.newTankTypeBtn.Name = "newTankTypeBtn";
             this.newTankTypeBtn.Size = new System.Drawing.Size(178, 34);
             this.newTankTypeBtn.TabIndex = 15;
@@ -191,7 +195,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 350);
+            this.label3.Location = new System.Drawing.Point(19, 283);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(144, 25);
             this.label3.TabIndex = 16;
@@ -200,7 +204,7 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(19, 388);
+            this.comboBox3.Location = new System.Drawing.Point(19, 314);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(182, 33);
             this.comboBox3.TabIndex = 17;
@@ -208,7 +212,7 @@
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(721, 173);
+            this.comboBox4.Location = new System.Drawing.Point(736, 181);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(165, 33);
             this.comboBox4.TabIndex = 19;
@@ -216,7 +220,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(721, 145);
+            this.label5.Location = new System.Drawing.Point(735, 153);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 25);
             this.label5.TabIndex = 20;
@@ -224,7 +228,7 @@
             // 
             // viewBtn
             // 
-            this.viewBtn.Location = new System.Drawing.Point(1300, 173);
+            this.viewBtn.Location = new System.Drawing.Point(1284, 173);
             this.viewBtn.Name = "viewBtn";
             this.viewBtn.Size = new System.Drawing.Size(112, 34);
             this.viewBtn.TabIndex = 21;
@@ -235,7 +239,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 211);
+            this.label6.Location = new System.Drawing.Point(19, 156);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(144, 25);
             this.label6.TabIndex = 23;
@@ -243,7 +247,7 @@
             // 
             // addTaskName
             // 
-            this.addTaskName.Location = new System.Drawing.Point(308, 116);
+            this.addTaskName.Location = new System.Drawing.Point(316, 104);
             this.addTaskName.Name = "addTaskName";
             this.addTaskName.Size = new System.Drawing.Size(178, 34);
             this.addTaskName.TabIndex = 26;
@@ -253,16 +257,16 @@
             // 
             // newTaskNameInput
             // 
-            this.newTaskNameInput.Location = new System.Drawing.Point(112, 119);
+            this.newTaskNameInput.Location = new System.Drawing.Point(120, 107);
             this.newTaskNameInput.Name = "newTaskNameInput";
-            this.newTaskNameInput.PlaceholderText = "Add new tank type";
+            this.newTaskNameInput.PlaceholderText = "Add new task name";
             this.newTaskNameInput.Size = new System.Drawing.Size(172, 31);
             this.newTaskNameInput.TabIndex = 25;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(108, 78);
+            this.label7.Location = new System.Drawing.Point(111, 47);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(173, 25);
             this.label7.TabIndex = 27;
@@ -279,7 +283,7 @@
             // 
             // addTaskBtn
             // 
-            this.addTaskBtn.Location = new System.Drawing.Point(19, 443);
+            this.addTaskBtn.Location = new System.Drawing.Point(19, 356);
             this.addTaskBtn.Name = "addTaskBtn";
             this.addTaskBtn.Size = new System.Drawing.Size(112, 34);
             this.addTaskBtn.TabIndex = 7;
@@ -299,7 +303,7 @@
             // tankTypeComboBox
             // 
             this.tankTypeComboBox.FormattingEnabled = true;
-            this.tankTypeComboBox.Location = new System.Drawing.Point(19, 239);
+            this.tankTypeComboBox.Location = new System.Drawing.Point(19, 184);
             this.tankTypeComboBox.Name = "tankTypeComboBox";
             this.tankTypeComboBox.Size = new System.Drawing.Size(182, 33);
             this.tankTypeComboBox.TabIndex = 3;
@@ -319,13 +323,13 @@
             this.panel1.Controls.Add(this.label6);
             this.panel1.Location = new System.Drawing.Point(108, 464);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(238, 499);
+            this.panel1.Size = new System.Drawing.Size(238, 401);
             this.panel1.TabIndex = 24;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(20, 132);
+            this.label10.Location = new System.Drawing.Point(20, 92);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(125, 25);
             this.label10.TabIndex = 35;
@@ -334,7 +338,7 @@
             // versionComboBox2
             // 
             this.versionComboBox2.FormattingEnabled = true;
-            this.versionComboBox2.Location = new System.Drawing.Point(19, 160);
+            this.versionComboBox2.Location = new System.Drawing.Point(19, 120);
             this.versionComboBox2.Name = "versionComboBox2";
             this.versionComboBox2.Size = new System.Drawing.Size(182, 33);
             this.versionComboBox2.TabIndex = 24;
@@ -343,7 +347,7 @@
             // lineComboBox2
             // 
             this.lineComboBox2.FormattingEnabled = true;
-            this.lineComboBox2.Location = new System.Drawing.Point(8, 37);
+            this.lineComboBox2.Location = new System.Drawing.Point(8, 40);
             this.lineComboBox2.Name = "lineComboBox2";
             this.lineComboBox2.Size = new System.Drawing.Size(182, 33);
             this.lineComboBox2.TabIndex = 29;
@@ -351,7 +355,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 9);
+            this.label8.Location = new System.Drawing.Point(13, 12);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(47, 25);
             this.label8.TabIndex = 30;
@@ -367,15 +371,15 @@
             this.panel2.Controls.Add(this.lineComboBox2);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.newTankTypeInput);
-            this.panel2.Location = new System.Drawing.Point(108, 231);
+            this.panel2.Location = new System.Drawing.Point(108, 243);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(400, 192);
+            this.panel2.Size = new System.Drawing.Size(400, 183);
             this.panel2.TabIndex = 31;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(213, 9);
+            this.label11.Location = new System.Drawing.Point(213, 12);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(74, 25);
             this.label11.TabIndex = 36;
@@ -384,14 +388,14 @@
             // versionComboBox1
             // 
             this.versionComboBox1.FormattingEnabled = true;
-            this.versionComboBox1.Location = new System.Drawing.Point(209, 37);
+            this.versionComboBox1.Location = new System.Drawing.Point(209, 40);
             this.versionComboBox1.Name = "versionComboBox1";
             this.versionComboBox1.Size = new System.Drawing.Size(182, 33);
             this.versionComboBox1.TabIndex = 35;
             // 
             // viewTankTypesBtn
             // 
-            this.viewTankTypesBtn.Location = new System.Drawing.Point(213, 101);
+            this.viewTankTypesBtn.Location = new System.Drawing.Point(213, 91);
             this.viewTankTypesBtn.Name = "viewTankTypesBtn";
             this.viewTankTypesBtn.Size = new System.Drawing.Size(178, 34);
             this.viewTankTypesBtn.TabIndex = 33;
@@ -401,7 +405,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(308, 166);
+            this.button1.Location = new System.Drawing.Point(316, 154);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(178, 34);
             this.button1.TabIndex = 32;
@@ -412,7 +416,7 @@
             // LineComboBoxTop
             // 
             this.LineComboBoxTop.AutoSize = true;
-            this.LineComboBoxTop.Location = new System.Drawing.Point(721, 81);
+            this.LineComboBoxTop.Location = new System.Drawing.Point(735, 89);
             this.LineComboBoxTop.Name = "LineComboBoxTop";
             this.LineComboBoxTop.Size = new System.Drawing.Size(47, 25);
             this.LineComboBoxTop.TabIndex = 34;
@@ -421,7 +425,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(721, 109);
+            this.comboBox1.Location = new System.Drawing.Point(735, 117);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(165, 33);
             this.comboBox1.TabIndex = 33;
@@ -430,7 +434,7 @@
             // versionComboBox3
             // 
             this.versionComboBox3.FormattingEnabled = true;
-            this.versionComboBox3.Location = new System.Drawing.Point(892, 109);
+            this.versionComboBox3.Location = new System.Drawing.Point(906, 117);
             this.versionComboBox3.Name = "versionComboBox3";
             this.versionComboBox3.Size = new System.Drawing.Size(165, 33);
             this.versionComboBox3.TabIndex = 35;
@@ -439,17 +443,53 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(892, 81);
+            this.label12.Location = new System.Drawing.Point(906, 89);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(74, 25);
             this.label12.TabIndex = 36;
             this.label12.Text = "Version:";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel3.Location = new System.Drawing.Point(721, 75);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(691, 150);
+            this.panel3.TabIndex = 37;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(736, 47);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 25);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "View Tasks:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(121, 215);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(136, 25);
+            this.label14.TabIndex = 38;
+            this.label14.Text = "Add Tank Types";
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel4.Location = new System.Drawing.Point(108, 75);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(400, 137);
+            this.panel4.TabIndex = 39;
             // 
             // ScheduleTasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1467, 1024);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.versionComboBox3);
             this.Controls.Add(this.LineComboBoxTop);
@@ -472,6 +512,8 @@
             this.Controls.Add(this.startUpRadioBtn);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel4);
             this.Name = "ScheduleTasks";
             this.Text = "ScheduleTasks";
             this.Load += new System.EventHandler(this.ScheduleTasks_Load);
@@ -526,5 +568,9 @@
         private ComboBox versionComboBox1;
         private ComboBox versionComboBox3;
         private Label label12;
+        private Panel panel3;
+        private Label label13;
+        private Label label14;
+        private Panel panel4;
     }
 }

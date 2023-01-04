@@ -49,11 +49,11 @@
             // taskDisplay
             // 
             this.taskDisplay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.taskDisplay.Location = new System.Drawing.Point(105, 171);
+            this.taskDisplay.Location = new System.Drawing.Point(69, 171);
             this.taskDisplay.Name = "taskDisplay";
             this.taskDisplay.RowHeadersWidth = 62;
             this.taskDisplay.RowTemplate.Height = 33;
-            this.taskDisplay.Size = new System.Drawing.Size(1037, 534);
+            this.taskDisplay.Size = new System.Drawing.Size(1120, 534);
             this.taskDisplay.TabIndex = 0;
             // 
             // employeesComboBox
