@@ -32,30 +32,35 @@
             this.Password = new System.Windows.Forms.TextBox();
             this.loginBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Email
             // 
-            this.Email.Location = new System.Drawing.Point(388, 224);
+            this.Email.Location = new System.Drawing.Point(272, 134);
+            this.Email.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Email.Name = "Email";
             this.Email.PlaceholderText = "email";
-            this.Email.Size = new System.Drawing.Size(395, 31);
+            this.Email.Size = new System.Drawing.Size(278, 23);
             this.Email.TabIndex = 0;
             // 
             // Password
             // 
-            this.Password.Location = new System.Drawing.Point(388, 320);
+            this.Password.Location = new System.Drawing.Point(272, 192);
+            this.Password.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Password.Name = "Password";
             this.Password.PlaceholderText = "password";
-            this.Password.Size = new System.Drawing.Size(395, 31);
+            this.Password.Size = new System.Drawing.Size(278, 23);
             this.Password.TabIndex = 1;
             this.Password.UseSystemPasswordChar = true;
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(509, 396);
+            this.loginBtn.Location = new System.Drawing.Point(356, 238);
+            this.loginBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.loginBtn.Name = "loginBtn";
-            this.loginBtn.Size = new System.Drawing.Size(166, 70);
+            this.loginBtn.Size = new System.Drawing.Size(116, 42);
             this.loginBtn.TabIndex = 2;
             this.loginBtn.Text = "Login";
             this.loginBtn.UseVisualStyleBackColor = true;
@@ -63,23 +68,45 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(913, 612);
+            this.button1.Location = new System.Drawing.Point(639, 367);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(257, 94);
+            this.button1.Size = new System.Drawing.Size(180, 56);
             this.button1.TabIndex = 3;
             this.button1.Text = "View Assigned Tasks";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(29, 367);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "By: Jason Bean";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(29, 388);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(132, 15);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Plastic Omnium: Huron";
+            // 
             // Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1217, 736);
+            this.ClientSize = new System.Drawing.Size(852, 442);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.loginBtn);
             this.Controls.Add(this.Password);
             this.Controls.Add(this.Email);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Login";
             this.Text = "Login";
             this.ResumeLayout(false);
@@ -93,5 +120,7 @@
         private TextBox Password;
         private Button loginBtn;
         private Button button1;
+        private Label label1;
+        private Label label2;
     }
 }
